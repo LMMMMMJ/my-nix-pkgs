@@ -31,7 +31,7 @@
       in {
         devShells.default = pkgs.callPackage ./pkgs/dev-shell { };
 
-        packages = pkgs.python3Packages // {
+        packages = {
           # Expose packages for direct building
           tushare = pkgs.python3Packages.tushare;
           # Example: my-package = pkgs.python3Packages.my-package;
