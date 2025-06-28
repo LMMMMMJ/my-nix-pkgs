@@ -5,6 +5,7 @@
 ## 包含的包
 
 - `tushare` - 中国股票市场数据接口
+- `pyexecjs` - 在Python中运行JavaScript代码
 
 ## 在其他项目中使用
 
@@ -29,7 +30,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          # 应用 overlay，使包可以通过 pkgs.python3Packages.tushare 访问
+          # 应用 overlay，使包可以通过 pkgs.python3Packages.* 访问
           overlays = [ my-nix-pkgs.overlays.default ];
         };
       in {
@@ -37,6 +38,7 @@
           packages = with pkgs; [
             # 现在可以像使用官方包一样使用
             python3Packages.tushare
+            python3Packages.pyexecjs
             python3
           ];
         };
@@ -45,6 +47,8 @@
           # 两种方式都可以使用
           tushare-via-overlay = pkgs.python3Packages.tushare;
           tushare-direct = my-nix-pkgs.packages.${system}.tushare;
+          pyexecjs-via-overlay = pkgs.python3Packages.pyexecjs;
+          pyexecjs-direct = my-nix-pkgs.packages.${system}.pyexecjs;
         };
       }
     );
@@ -64,6 +68,7 @@
         
         environment.systemPackages = with pkgs; [
           python3Packages.tushare
+          python3Packages.pyexecjs
         ];
       }];
     };
@@ -78,6 +83,7 @@
 ```bash
 # 构建特定包
 nix build .#tushare
+nix build .#pyexecjs
 
 # 进入开发环境
 nix develop
@@ -88,6 +94,7 @@ nix develop
 ```bash
 # 进入开发环境后测试
 python3 -c "import tushare as ts; print('Tushare version:', ts.__version__)"
+python3 -c "import execjs; print('PyExecJS test: 1 + 2 =', execjs.eval('1 + 2'))"
 ```
 
 ## 添加新包
