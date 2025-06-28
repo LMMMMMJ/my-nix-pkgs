@@ -16,7 +16,7 @@
             (python-final: python-prev: rec {
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
-              # Example: my-package = python-final.callPackage ./pkgs/my-package { };
+              pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
             })
           ];
         };
@@ -34,7 +34,7 @@
         packages = {
           # Expose packages for direct building
           tushare = pkgs.python3Packages.tushare;
-          # Example: my-package = pkgs.python3Packages.my-package;
+          pyexecjs = pkgs.python3Packages.pyexecjs;
         };
       });
 } 
