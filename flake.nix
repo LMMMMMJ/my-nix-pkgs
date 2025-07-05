@@ -18,6 +18,7 @@
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
               pydantic = python-final.callPackage ./pkgs/pydantic { };
+              pydantic-core = python-final.callPackage ./pkgs/pydantic-core { };
             })
           ];
         };
@@ -37,6 +38,7 @@
           tushare = pkgs.python3Packages.tushare;
           pyexecjs = pkgs.python3Packages.pyexecjs;
           pydantic = pkgs.python3Packages.pydantic;
+          pydantic-core = pkgs.python3Packages.pydantic-core;
         };
       });
 } 
