@@ -17,6 +17,7 @@
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
+              pydantic = python-final.callPackage ./pkgs/pydantic { };
             })
           ];
         };
@@ -35,6 +36,7 @@
           # Expose packages for direct building
           tushare = pkgs.python3Packages.tushare;
           pyexecjs = pkgs.python3Packages.pyexecjs;
+          pydantic = pkgs.python3Packages.pydantic;
         };
       });
 } 
