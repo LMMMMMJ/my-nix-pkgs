@@ -1,48 +1,95 @@
-{ lib, buildPythonPackage, fetchPypi, setuptools, pythonOlder
-, hatchling, hatch-fancy-pypi-readme, typing-extensions, annotated-types
-, pydantic-core, pytest, pytest-mock, cloudpickle, email-validator
-, pytestCheckHook }:
+{ lib
+, buildPythonPackage
+, fetchFromGitHub
+, pythonOlder
+
+# build-system
+, hatchling
+, hatch-fancy-pypi-readme
+
+# native dependencies
+, libxcrypt
+
+# dependencies
+, annotated-types
+, pydantic-core
+, typing-extensions
+
+# tests
+, cloudpickle
+, email-validator
+, dirty-equals
+, faker
+, pytestCheckHook
+, pytest-mock
+}:
 
 buildPythonPackage rec {
   pname = "pydantic";
   version = "2.5.2";
-  format = "pyproject";
+  pyproject = true;
 
   disabled = pythonOlder "3.7";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "sha256-/xd7pkxvr3PXr6LoytOP1FbA2+AcmVTnEDgAHNFabt0=";
+  src = fetchFromGitHub {
+    owner = "pydantic";
+    repo = "pydantic";
+    rev = "refs/tags/v${version}";
+    hash = "sha256-D0gYcyrKVVDhBgV9sCVTkGq/kFmIoT9l0i5bRM1qxzM=";
   };
 
-  build-system = [
-    hatchling
+  buildInputs = lib.optionals (pythonOlder "3.9") [
+    libxcrypt
+  ];
+
+  nativeBuildInputs = [
     hatch-fancy-pypi-readme
+    hatchling
   ];
 
   propagatedBuildInputs = [
-    typing-extensions
     annotated-types
     pydantic-core
+    typing-extensions
   ];
 
   passthru.optional-dependencies = {
-    email = [ email-validator ];
+    email = [
+      email-validator
+    ];
   };
 
-  # Disable tests due to benchmark dependency conflicts
-  doCheck = false;
+  nativeCheckInputs = [
+    cloudpickle
+    dirty-equals
+    faker
+    pytest-mock
+    pytestCheckHook
+  ] ++ lib.flatten (lib.attrValues passthru.optional-dependencies);
+
+  preCheck = ''
+    export HOME=$(mktemp -d)
+    substituteInPlace pyproject.toml \
+      --replace "'--benchmark-columns', 'min,mean,stddev,outliers,rounds,iterations'," "" \
+      --replace "'--benchmark-group-by', 'group'," "" \
+      --replace "'--benchmark-warmup', 'on'," "" \
+      --replace "'--benchmark-disable'," ""
+  '';
+
+  disabledTestPaths = [
+    "tests/benchmarks"
+
+    # avoid cyclic dependency
+    "tests/test_docs.py"
+  ];
 
   pythonImportsCheck = [ "pydantic" ];
 
-  # Disable runtime dependency check to allow newer pydantic-core
-  dontCheckRuntimeDeps = true;
-
   meta = with lib; {
-    description = "Data validation using Python type hints";
+    description = "Data validation and settings management using Python type hinting";
     homepage = "https://github.com/pydantic/pydantic";
-    changelog = "https://github.com/pydantic/pydantic/blob/v${version}/CHANGELOG.md";
+    changelog = "https://github.com/pydantic/pydantic/blob/v${version}/HISTORY.md";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ wd15 ];
   };
-} 
+}
