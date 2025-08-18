@@ -6,6 +6,7 @@
 
 - `tushare` - 中国股票市场数据接口
 - `pyexecjs` - 在Python中运行JavaScript代码
+- `claude-code` - Anthropic的智能编程助手，直接在终端中运行
 
 ## 在其他项目中使用
 
@@ -39,6 +40,7 @@
             # 现在可以像使用官方包一样使用
             python3Packages.tushare
             python3Packages.pyexecjs
+            claude-code
             python3
           ];
         };
@@ -49,6 +51,8 @@
           tushare-direct = my-nix-pkgs.packages.${system}.tushare;
           pyexecjs-via-overlay = pkgs.python3Packages.pyexecjs;
           pyexecjs-direct = my-nix-pkgs.packages.${system}.pyexecjs;
+          claude-code-via-overlay = pkgs.claude-code;
+          claude-code-direct = my-nix-pkgs.packages.${system}.claude-code;
         };
       }
     );
@@ -69,6 +73,7 @@
         environment.systemPackages = with pkgs; [
           python3Packages.tushare
           python3Packages.pyexecjs
+          claude-code
         ];
       }];
     };
@@ -84,6 +89,7 @@
 # 构建特定包
 nix build .#tushare
 nix build .#pyexecjs
+nix build .#claude-code
 
 # 进入开发环境
 nix develop
@@ -95,6 +101,7 @@ nix develop
 # 进入开发环境后测试
 python3 -c "import tushare as ts; print('Tushare version:', ts.__version__)"
 python3 -c "import execjs; print('PyExecJS test: 1 + 2 =', execjs.eval('1 + 2'))"
+claude --version
 ```
 
 ## 添加新包

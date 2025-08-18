@@ -19,6 +19,8 @@
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
             })
           ];
+          # Add non-Python packages here
+          claude-code = final.callPackage ./pkgs/claude-code { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
@@ -37,6 +39,8 @@
           pyexecjs = pkgs.python3Packages.pyexecjs;
           pydantic = pkgs.python3Packages.pydantic;
           pydantic-core = pkgs.python3Packages.pydantic-core;
+          # Add claude-code package
+          claude-code = pkgs.claude-code;
         };
       });
 } 
