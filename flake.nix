@@ -17,7 +17,9 @@
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
-            })
+            } 
+            # Import HuggingFace family packages
+            // import ./pkgs/huggingface-family { inherit python-final python-prev; })
           ];
           # Add non-Python packages here
           claude-code = final.callPackage ./pkgs/claude-code { };
@@ -37,6 +39,11 @@
           # Expose packages for direct building
           tushare = pkgs.python3Packages.tushare;
           pyexecjs = pkgs.python3Packages.pyexecjs;
+          hf-xet = pkgs.python3Packages.hf-xet;
+          huggingface-hub = pkgs.python3Packages.huggingface-hub;
+          tokenizers = pkgs.python3Packages.tokenizers;
+          transformers = pkgs.python3Packages.transformers;
+          sentence-transformers = pkgs.python3Packages.sentence-transformers;
           pydantic = pkgs.python3Packages.pydantic;
           pydantic-core = pkgs.python3Packages.pydantic-core;
           # Add claude-code package
