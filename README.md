@@ -8,6 +8,7 @@
 - `tushare` - 中国股票市场数据接口
 - `pyexecjs` - 在Python中运行JavaScript代码
 - `claude-code` - Anthropic的智能编程助手，直接在终端中运行
+- `claude-code-router` - Claude Code 路由器，支持多模型提供商和请求路由
 
 ### HuggingFace 家族包
 - `hf-xet` (v1.1.8) - Xet 客户端技术，用于 huggingface-hub
@@ -55,6 +56,7 @@
             python3Packages.tokenizers
             python3Packages.hf-xet
             claude-code
+            claude-code-router
             python3
           ];
         };
@@ -67,6 +69,8 @@
           pyexecjs-direct = my-nix-pkgs.packages.${system}.pyexecjs;
           claude-code-via-overlay = pkgs.claude-code;
           claude-code-direct = my-nix-pkgs.packages.${system}.claude-code;
+          claude-code-router-via-overlay = pkgs.claude-code-router;
+          claude-code-router-direct = my-nix-pkgs.packages.${system}.claude-code-router;
           # HuggingFace 包
           sentence-transformers = pkgs.python3Packages.sentence-transformers;
           transformers = pkgs.python3Packages.transformers;
@@ -100,6 +104,7 @@
           python3Packages.tokenizers
           python3Packages.hf-xet
           claude-code
+          claude-code-router
         ];
       }];
     };
@@ -116,6 +121,7 @@
 nix build .#tushare
 nix build .#pyexecjs
 nix build .#claude-code
+nix build .#claude-code-router
 
 # 构建 HuggingFace 包
 nix build .#sentence-transformers
@@ -154,7 +160,80 @@ import huggingface_hub
 print('huggingface-hub version:', huggingface_hub.__version__)
 "
 claude --version
+ccr --help
 ```
+
+## Claude Code Router 使用说明
+
+### 快速开始
+
+Claude Code Router 是一个强大的工具，允许你将 Claude Code 请求路由到不同的模型提供商。
+
+#### 1. 基本配置
+
+创建配置文件 `~/.claude-code-router/config.json`：
+
+```json
+{
+  "log": true,
+  "OPENAI_API_KEY": "your-api-key-here",
+  "OPENAI_BASE_URL": "https://api.openai.com/v1",
+  "OPENAI_MODEL": "gpt-4o-mini",
+  "router": {
+    "default": "openai,gpt-4o-mini",
+    "background": "openai,gpt-4o-mini",
+    "think": "openai,gpt-4o",
+    "longContext": "openai,gpt-4o",
+    "longContextThreshold": 60000
+  },
+  "providers": {
+    "openai": {
+      "apiKey": "${OPENAI_API_KEY}",
+      "baseURL": "${OPENAI_BASE_URL}"
+    }
+  }
+}
+```
+
+#### 2. 常用命令
+
+```bash
+# 启动服务
+ccr start
+
+# 停止服务
+ccr stop
+
+# 重启服务
+ccr restart
+
+# 查看状态
+ccr status
+
+# 使用 Claude Code 与路由器
+ccr code
+
+# 打开 Web UI 进行配置
+ccr ui
+```
+
+#### 3. 支持的提供商
+
+- **OpenRouter** - 多模型聚合平台
+- **DeepSeek** - 高性价比的中文优化模型
+- **Ollama** - 本地运行的开源模型
+- **Gemini** - Google 的多模态模型
+- **Volcengine** - 火山引擎的模型服务
+- **SiliconFlow** - 硅流的模型平台
+
+#### 4. 高级功能
+
+- **模型路由**: 根据任务类型自动选择最适合的模型
+- **动态切换**: 在 Claude Code 中使用 `/model provider,model` 命令切换模型
+- **自定义转换器**: 支持自定义请求/响应处理逻辑
+- **GitHub Actions 集成**: 在 CI/CD 流程中使用
+
+更多详细配置请参考：https://github.com/musistudio/claude-code-router
 
 ## 添加新包
 
@@ -218,4 +297,25 @@ direnv allow
 - 使用 `nix flake update` 更新依赖
 - 使用 `nix flake check` 验证配置
 - 使用 `nix build .#package-name` 测试特定包
-- 定期检查上游包更新 
+- 定期检查上游包更新
+
+### 包更新脚本
+
+项目中包含了自动更新脚本：
+
+```bash
+# 更新 claude-code 到最新版本
+cd pkgs/claude-code && ./update.sh
+
+# 更新 claude-code-router 到最新版本
+cd pkgs/claude-code-router && ./update.sh
+```
+
+### 版本信息
+
+当前包版本：
+- **claude-code**: v1.0.113
+- **claude-code-router**: v1.0.49
+- **sentence-transformers**: v5.1.0
+- **transformers**: v4.55.2
+- **huggingface-hub**: v0.34.4 
