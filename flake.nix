@@ -23,6 +23,7 @@
           ];
           # Add non-Python packages here
           claude-code = final.callPackage ./pkgs/claude-code { };
+          claude-code-router = final.callPackage ./pkgs/claude-code-router { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
@@ -48,6 +49,8 @@
           pydantic-core = pkgs.python3Packages.pydantic-core;
           # Add claude-code package
           claude-code = pkgs.claude-code;
+          # Add claude-code-router package
+          claude-code-router = pkgs.claude-code-router;
         };
       });
 } 
