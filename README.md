@@ -21,6 +21,12 @@
 
 ## 在其他项目中使用
 
+我们提供了多种集成方式，您可以根据项目需求选择最适合的方法：
+
+- **方法一（Overlay）**：适合需要与现有nixpkgs无缝集成的场景，包可以通过 `pkgs.*` 直接访问
+- **方法二（外部Flake）**：适合需要版本隔离和模块化管理的场景
+- **方法三（NixOS系统）**：适合在NixOS系统级别安装和管理包的场景
+
 ### 方法一：使用 Overlay（推荐）
 
 在您的项目的 `flake.nix` 中：
@@ -32,7 +38,7 @@
     my-nix-pkgs = {
       url = "path:/home/jacob/project/my-nix-pkgs";  # 本地路径
       # 或者远程仓库：
-      # url = "github:yourusername/my-nix-pkgs";
+      # url = "github:LMMMMMJ/my-nix-pkgs";
     };
     utils.url = "github:numtide/flake-utils";
   };
@@ -60,6 +66,7 @@
             claude-code
             claude-code-router
             gemini-cli
+            codex
             python3
           ];
         };
@@ -76,6 +83,8 @@
           claude-code-router-direct = my-nix-pkgs.packages.${system}.claude-code-router;
           gemini-cli-via-overlay = pkgs.gemini-cli;
           gemini-cli-direct = my-nix-pkgs.packages.${system}.gemini-cli;
+          codex-via-overlay = pkgs.codex;
+          codex-direct = my-nix-pkgs.packages.${system}.codex;
           # HuggingFace 包
           sentence-transformers = pkgs.python3Packages.sentence-transformers;
           transformers = pkgs.python3Packages.transformers;
@@ -88,11 +97,154 @@
 }
 ```
 
-### 方法二：在 NixOS 系统配置中使用
+### 方法二：集成外部 Flake
+
+如果您想要集成我们的库同时保持外部flake的独立性，可以参考我们集成codex的方式：
 
 ```nix
 {
-  inputs.my-nix-pkgs.url = "github:yourusername/my-nix-pkgs";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    # 集成我们的库作为外部 flake
+    my-nix-pkgs = {
+      url = "github:LMMMMMJ/my-nix-pkgs";
+      # 或本地路径：url = "path:/path/to/my-nix-pkgs";
+    };
+    # 可以同时集成其他外部 flake
+    # some-other-flake.url = "github:someone/some-flake";
+  };
+
+  outputs = { self, nixpkgs, my-nix-pkgs, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      devShells.default = pkgs.mkShell {
+        packages = [
+          # 直接引用我们库中的包
+          my-nix-pkgs.packages.${system}.claude-code
+          my-nix-pkgs.packages.${system}.claude-code-router
+          my-nix-pkgs.packages.${system}.gemini-cli
+          my-nix-pkgs.packages.${system}.codex
+          # Python 包
+          (pkgs.python3.withPackages (ps: [
+            my-nix-pkgs.packages.${system}.tushare
+            my-nix-pkgs.packages.${system}.pyexecjs
+            # HuggingFace 包
+            my-nix-pkgs.packages.${system}.sentence-transformers
+            my-nix-pkgs.packages.${system}.transformers
+            my-nix-pkgs.packages.${system}.huggingface-hub
+            my-nix-pkgs.packages.${system}.tokenizers
+            my-nix-pkgs.packages.${system}.hf-xet
+          ]))
+        ];
+        
+        shellHook = ''
+          echo "🚀 开发环境已就绪！"
+          echo "可用的 AI 工具："
+          echo "  - claude-code: $(claude --version 2>/dev/null || echo '未安装')"
+          echo "  - claude-code-router: $(ccr --version 2>/dev/null || echo '未安装')"
+          echo "  - gemini-cli: $(gemini --version 2>/dev/null || echo '未安装')"
+          echo "  - codex: $(codex --version 2>/dev/null || echo '未安装')"
+          echo ""
+          echo "可用的 Python 库："
+          python3 -c "
+          try:
+              import tushare as ts
+              print('  ✓ tushare:', ts.__version__)
+          except: print('  ✗ tushare: 未安装')
+          
+          try:
+              import PyExecJS
+              print('  ✓ PyExecJS: 已安装')
+          except: print('  ✗ PyExecJS: 未安装')
+          
+          try:
+              import transformers
+              print('  ✓ transformers:', transformers.__version__)
+          except: print('  ✗ transformers: 未安装')
+          
+          try:
+              import sentence_transformers
+              print('  ✓ sentence-transformers:', sentence_transformers.__version__)
+          except: print('  ✗ sentence-transformers: 未安装')
+          "
+        '';
+      };
+      
+      # 也可以创建专门的包输出
+      packages = {
+        # 创建一个包含所有 AI 工具的包
+        ai-tools = pkgs.buildEnv {
+          name = "ai-tools";
+          paths = [
+            my-nix-pkgs.packages.${system}.claude-code
+            my-nix-pkgs.packages.${system}.claude-code-router
+            my-nix-pkgs.packages.${system}.gemini-cli
+            my-nix-pkgs.packages.${system}.codex
+          ];
+        };
+        
+        # 创建一个包含所有 Python 库的环境
+        python-ml = pkgs.python3.withPackages (ps: [
+          my-nix-pkgs.packages.${system}.tushare
+          my-nix-pkgs.packages.${system}.pyexecjs
+          my-nix-pkgs.packages.${system}.sentence-transformers
+          my-nix-pkgs.packages.${system}.transformers
+          my-nix-pkgs.packages.${system}.huggingface-hub
+          my-nix-pkgs.packages.${system}.tokenizers
+          my-nix-pkgs.packages.${system}.hf-xet
+        ]);
+      };
+    };
+}
+```
+
+**这种方法的优势：**
+- ✅ **版本隔离**：每个外部flake使用自己的nixpkgs版本，避免版本冲突
+- ✅ **自动更新**：使用 `nix flake update` 可以自动更新所有依赖
+- ✅ **模块化**：可以选择性地引用需要的包，不会引入不必要的依赖
+- ✅ **灵活性**：可以同时集成多个外部flake，构建复杂的开发环境
+- ✅ **缓存友好**：每个flake都可以有自己的二进制缓存
+
+**快速开始示例：**
+```bash
+# 1. 创建新项目
+mkdir my-ai-project && cd my-ai-project
+
+# 2. 创建 flake.nix（使用上面的模板）
+cat > flake.nix << 'EOF'
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    my-nix-pkgs.url = "github:LMMMMMJ/my-nix-pkgs";
+  };
+  
+  outputs = { nixpkgs, my-nix-pkgs, ... }:
+    let system = "x86_64-linux"; in {
+      devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
+        packages = [
+          my-nix-pkgs.packages.${system}.claude-code
+          my-nix-pkgs.packages.${system}.codex
+        ];
+      };
+    };
+}
+EOF
+
+# 3. 进入开发环境
+nix develop
+
+# 4. 开始使用 AI 工具
+claude "帮我写一个Python函数"
+codex "解释这段代码"
+```
+
+### 方法三：在 NixOS 系统配置中使用
+
+```nix
+{
+  inputs.my-nix-pkgs.url = "github:LMMMMMJ/my-nix-pkgs";
   
   outputs = { nixpkgs, my-nix-pkgs, ... }: {
     nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
@@ -111,6 +263,7 @@
           claude-code
           claude-code-router
           gemini-cli
+          codex
         ];
       }];
     };
@@ -431,6 +584,8 @@ direnv allow
 - 统一的包管理结构
 - **混合nixpkgs版本支持**: 项目主体使用稳定的nixos-24.11，而codex使用nixpkgs-unstable获得最新工具链支持
 - **外部flake集成**: 无缝集成第三方flake包，保持项目模块化
+- **多种集成方式**: 提供Overlay、外部Flake、NixOS系统三种集成方式，适应不同使用场景
+- **开箱即用的开发环境**: 提供完整的shellHook和版本检测，快速验证环境配置
 
 ## 维护
 
