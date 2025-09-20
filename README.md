@@ -10,6 +10,7 @@
 - `claude-code` - Anthropic的智能编程助手，直接在终端中运行
 - `claude-code-router` - Claude Code 路由器，支持多模型提供商和请求路由
 - `gemini-cli` - Google Gemini AI助手的命令行工具，直接在终端中与Gemini交互
+- `codex` - OpenAI的AI编程助手，轻量级编程代理，直接在终端中运行
 
 ### HuggingFace 家族包
 - `hf-xet` (v1.1.8) - Xet 客户端技术，用于 huggingface-hub
@@ -128,6 +129,7 @@ nix build .#pyexecjs
 nix build .#claude-code
 nix build .#claude-code-router
 nix build .#gemini-cli
+nix build .#codex
 
 # 构建 HuggingFace 包
 nix build .#sentence-transformers
@@ -168,6 +170,7 @@ print('huggingface-hub version:', huggingface_hub.__version__)
 claude --version
 ccr --version
 gemini --version
+codex --version
 ```
 
 ## Claude Code Router 使用说明
@@ -286,6 +289,89 @@ gemini config list
 
 更多详细使用方法请参考：https://github.com/google-gemini/gemini-cli
 
+## Codex 使用说明
+
+### 快速开始
+
+Codex 是 OpenAI 的AI编程助手，轻量级编程代理，可以直接在终端中运行，提供智能代码生成、代码解释和编程协助功能。
+
+**注意**：本项目使用 [sadjow/codex-nix](https://github.com/sadjow/codex-nix) 外部flake提供Codex包，该包基于 `nixpkgs-unstable` 构建，确保获得最新的工具链支持和自动更新功能。
+
+#### 1. 基本使用
+
+```bash
+# 直接与 Codex 对话
+codex "如何在Python中读取CSV文件？"
+
+# 代码生成
+codex "写一个快速排序算法的Python实现"
+
+# 交互模式
+codex
+
+# 执行模式（非交互）
+codex exec "解释这段代码的功能"
+```
+
+#### 2. 常用命令
+
+```bash
+# 查看版本信息
+codex --version
+
+# 查看帮助信息
+codex --help
+
+# 登录管理
+codex login
+
+# 登出
+codex logout
+
+# 应用最新的diff到本地工作树
+codex apply
+
+# 恢复之前的会话
+codex resume
+```
+
+#### 3. 高级功能
+
+- **代码生成**: 根据自然语言描述生成代码
+- **代码解释**: 分析和解释现有代码
+- **交互式编程**: 支持多轮对话的编程协助
+- **Git集成**: 可以应用生成的代码diff到工作树
+- **多种沙盒模式**: 安全的代码执行环境
+- **模型选择**: 支持不同的AI模型
+
+#### 4. 配置选项
+
+```bash
+# 使用特定模型
+codex -m o3 "你的问题"
+
+# 启用网络搜索
+codex --search "查询最新的API文档"
+
+# 设置沙盒权限
+codex -s workspace-write "修改这个文件"
+
+# 全自动模式（谨慎使用）
+codex --full-auto "自动化任务"
+```
+
+#### 5. 包特性
+
+- **自动更新**: 每日检查OpenAI Codex的新版本
+- **预构建二进制**: 通过Cachix提供缓存，快速安装
+- **Node.js 22 LTS**: 捆绑最新长期支持版本
+- **跨平台支持**: 支持Linux和macOS
+- **版本隔离**: 使用独立的nixpkgs-unstable，不影响项目其他包
+
+更多详细使用方法请参考：
+- [OpenAI Codex CLI官方文档](https://github.com/openai/codex)  
+- [codex-nix包文档](https://github.com/sadjow/codex-nix)
+
 ## 添加新包
 
 ### 添加普通包
@@ -331,6 +417,7 @@ direnv allow
 ## 特性
 
 ### 🚀 最新版本
+- **codex v0.39.0** - OpenAI AI编程助手，通过外部flake自动更新，基于nixpkgs-unstable
 - **sentence-transformers v5.1.0** - 支持 ONNX 和 OpenVINO 后端，提供 2-3x 加速
 - **transformers v4.55.2** - 最新的模型支持和功能
 - **huggingface-hub v0.34.4** - 完整的 Hub 功能支持
@@ -342,6 +429,8 @@ direnv allow
 - 自动处理版本兼容性
 - 包含必要的运行时修复
 - 统一的包管理结构
+- **混合nixpkgs版本支持**: 项目主体使用稳定的nixos-24.11，而codex使用nixpkgs-unstable获得最新工具链支持
+- **外部flake集成**: 无缝集成第三方flake包，保持项目模块化
 
 ## 维护
 
@@ -368,6 +457,7 @@ cd pkgs/claude-code-router && ./update.sh
 - **claude-code**: v1.0.113
 - **claude-code-router**: v1.0.49
 - **gemini-cli**: v0.5.5
+- **codex**: v0.39.0 (通过外部flake自动更新)
 - **sentence-transformers**: v5.1.0
 - **transformers**: v4.55.2
 - **huggingface-hub**: v0.34.4 
