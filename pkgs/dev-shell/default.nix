@@ -1,4 +1,4 @@
-{ mkShell, python3, claude-code, claude-code-router }:
+{ mkShell, python3, claude-code, claude-code-router, gemini-cli }:
 
 let
   my-nix-pkgs-dev = python3.withPackages (pyPkgs:
@@ -20,14 +20,15 @@ let
 in mkShell rec {
   name = "my-nix-pkgs";
 
-  packages = [ my-nix-pkgs-dev claude-code claude-code-router ];
+  packages = [ my-nix-pkgs-dev claude-code claude-code-router gemini-cli ];
 
   shellHook = ''
     export PS1="$(echo -e '\u${pythonIcon}') {\[$(tput sgr0)\]\[\033[38;5;228m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]} (${name}) \\$ \[$(tput sgr0)\]"
     echo "Welcome to ${name} development environment!"
-    echo "Available packages: tushare, pyexecjs, claude-code, claude-code-router"
+    echo "Available packages: tushare, pyexecjs, claude-code, claude-code-router, gemini-cli"
     echo "HuggingFace packages: hf-xet, huggingface-hub, tokenizers, transformers, sentence-transformers"
     echo "Claude Code version: $(claude --version)"
-    echo "Claude Code Router: $(ccr --help | head -1)"
+    echo "Claude Code Router version: $(ccr -v)"
+    echo "Gemini CLI version: $(gemini --version)"
   '';
 } 

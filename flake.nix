@@ -24,6 +24,7 @@
           # Add non-Python packages here
           claude-code = final.callPackage ./pkgs/claude-code { };
           claude-code-router = final.callPackage ./pkgs/claude-code-router { };
+          gemini-cli = final.callPackage ./pkgs/gemini-cli { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
@@ -51,6 +52,8 @@
           claude-code = pkgs.claude-code;
           # Add claude-code-router package
           claude-code-router = pkgs.claude-code-router;
+          # Add gemini-cli package
+          gemini-cli = pkgs.gemini-cli;
         };
       });
 } 
