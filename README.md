@@ -9,6 +9,7 @@
 - `pyexecjs` - 在Python中运行JavaScript代码
 - `claude-code` - Anthropic的智能编程助手，直接在终端中运行
 - `claude-code-router` - Claude Code 路由器，支持多模型提供商和请求路由
+- `gemini-cli` - Google Gemini AI助手的命令行工具，直接在终端中与Gemini交互
 
 ### HuggingFace 家族包
 - `hf-xet` (v1.1.8) - Xet 客户端技术，用于 huggingface-hub
@@ -57,6 +58,7 @@
             python3Packages.hf-xet
             claude-code
             claude-code-router
+            gemini-cli
             python3
           ];
         };
@@ -71,6 +73,8 @@
           claude-code-direct = my-nix-pkgs.packages.${system}.claude-code;
           claude-code-router-via-overlay = pkgs.claude-code-router;
           claude-code-router-direct = my-nix-pkgs.packages.${system}.claude-code-router;
+          gemini-cli-via-overlay = pkgs.gemini-cli;
+          gemini-cli-direct = my-nix-pkgs.packages.${system}.gemini-cli;
           # HuggingFace 包
           sentence-transformers = pkgs.python3Packages.sentence-transformers;
           transformers = pkgs.python3Packages.transformers;
@@ -105,6 +109,7 @@
           python3Packages.hf-xet
           claude-code
           claude-code-router
+          gemini-cli
         ];
       }];
     };
@@ -122,6 +127,7 @@ nix build .#tushare
 nix build .#pyexecjs
 nix build .#claude-code
 nix build .#claude-code-router
+nix build .#gemini-cli
 
 # 构建 HuggingFace 包
 nix build .#sentence-transformers
@@ -160,7 +166,8 @@ import huggingface_hub
 print('huggingface-hub version:', huggingface_hub.__version__)
 "
 claude --version
-ccr --help
+ccr --version
+gemini --version
 ```
 
 ## Claude Code Router 使用说明
@@ -234,6 +241,50 @@ ccr ui
 - **GitHub Actions 集成**: 在 CI/CD 流程中使用
 
 更多详细配置请参考：https://github.com/musistudio/claude-code-router
+
+## Gemini CLI 使用说明
+
+### 快速开始
+
+Gemini CLI 是 Google 官方的 Gemini AI 助手命令行工具，让你可以直接在终端中与 Gemini 模型交互。
+
+#### 1. 基本使用
+
+```bash
+# 直接与 Gemini 对话
+gemini "你好，请介绍一下自己"
+
+# 从文件读取内容并提问
+gemini "请解释这段代码" < script.py
+
+# 使用管道输入
+echo "Hello World" | gemini "请翻译成中文"
+```
+
+#### 2. 常用命令
+
+```bash
+# 查看版本信息
+gemini --version
+
+# 查看帮助信息
+gemini --help
+
+# 设置 API 密钥（如果需要）
+gemini config set api-key YOUR_API_KEY
+
+# 查看当前配置
+gemini config list
+```
+
+#### 3. 高级功能
+
+- **多轮对话**: 支持上下文感知的连续对话
+- **文件处理**: 可以处理多种文件格式的输入
+- **代码分析**: 专门优化的代码理解和生成功能
+- **多语言支持**: 支持多种编程语言和自然语言
+
+更多详细使用方法请参考：https://github.com/google-gemini/gemini-cli
 
 ## 添加新包
 
@@ -316,6 +367,7 @@ cd pkgs/claude-code-router && ./update.sh
 当前包版本：
 - **claude-code**: v1.0.113
 - **claude-code-router**: v1.0.49
+- **gemini-cli**: v0.5.5
 - **sentence-transformers**: v5.1.0
 - **transformers**: v4.55.2
 - **huggingface-hub**: v0.34.4 
