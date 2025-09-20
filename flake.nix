@@ -3,11 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
+    codex-nix.url = "github:sadjow/codex-nix";
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, codex-nix, ... }@inputs:
     {
       overlays = {
         # It is recommended that the downstream user apply overlays.default directly.
@@ -25,6 +25,8 @@
           claude-code = final.callPackage ./pkgs/claude-code { };
           claude-code-router = final.callPackage ./pkgs/claude-code-router { };
           gemini-cli = final.callPackage ./pkgs/gemini-cli { };
+          # Use external codex-nix instead of local package
+          codex = codex-nix.packages.${final.system}.default;
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
@@ -35,7 +37,9 @@
           overlays = [ self.overlays.default ];
         };
       in {
-        devShells.default = pkgs.callPackage ./pkgs/dev-shell { };
+        devShells.default = pkgs.callPackage ./pkgs/dev-shell { 
+          codex = codex-nix.packages.${system}.default;
+        };
 
         packages = {
           # Expose packages for direct building
@@ -54,6 +58,8 @@
           claude-code-router = pkgs.claude-code-router;
           # Add gemini-cli package
           gemini-cli = pkgs.gemini-cli;
+          # Add codex package from external flake
+          codex = codex-nix.packages.${system}.default;
         };
       });
 } 
