@@ -570,7 +570,7 @@ direnv allow
 ## 特性
 
 ### 🚀 最新版本
-- **codex v0.39.0** - OpenAI AI编程助手，通过外部flake自动更新，基于nixpkgs-unstable
+- **codex v0.41.0** - OpenAI AI编程助手，通过外部flake自动更新，基于nixpkgs-unstable
 - **sentence-transformers v5.1.0** - 支持 ONNX 和 OpenVINO 后端，提供 2-3x 加速
 - **transformers v4.55.2** - 最新的模型支持和功能
 - **huggingface-hub v0.34.4** - 完整的 Hub 功能支持
