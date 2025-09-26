@@ -612,7 +612,7 @@ cd pkgs/claude-code-router && ./update.sh
 - **claude-code**: v1.0.126
 - **claude-code-router**: v1.0.50
 - **gemini-cli**: v0.5.5
-- **codex**: v0.39.0 (通过外部flake自动更新)
+- **codex**: v0.41.0 (通过外部flake自动更新)
 - **sentence-transformers**: v5.1.0
 - **transformers**: v4.55.2
 - **huggingface-hub**: v0.34.4 
