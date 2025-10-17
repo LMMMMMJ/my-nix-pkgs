@@ -29,7 +29,7 @@
           codex = codex-nix.packages.${final.system}.default;
         };
       };
-    } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" ] (system:
+    } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] (system:
       let
         pkgs = import nixpkgs {
           inherit system;
