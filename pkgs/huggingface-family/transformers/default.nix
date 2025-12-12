@@ -16,6 +16,7 @@
   regex,
   requests,
   tokenizers,
+  typer-slim,
   safetensors,
   tqdm,
 
@@ -58,14 +59,14 @@
 
 buildPythonPackage rec {
   pname = "transformers";
-  version = "4.55.2";
+  version = "5.0.0rc1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "transformers";
     tag = "v${version}";
-    hash = "sha256-6cYZFFmwtPzResNB0q6yg/Lvclef4fAUqNxkSh+y+iU=";
+    hash = "sha256-dyORKt7iRCXv7L4NSeidQtM9pxJMb2Z0x8yxGZG5wz4=";
   };
 
   build-system = [ setuptools ];
@@ -79,6 +80,7 @@ buildPythonPackage rec {
     regex
     requests
     tokenizers
+    typer-slim
     safetensors
     tqdm
   ];
@@ -191,8 +193,8 @@ buildPythonPackage rec {
 
   meta = {
     homepage = "https://github.com/huggingface/transformers";
-    description = "Natural Language Processing for TensorFlow 2.0 and PyTorch";
-    mainProgram = "transformers-cli";
+    description = "Transformers: the model-definition framework for state-of-the-art machine learning models";
+    mainProgram = "transformers";
     changelog = "https://github.com/huggingface/transformers/releases/tag/v${version}";
     license = lib.licenses.asl20;
     platforms = lib.platforms.unix;

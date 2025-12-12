@@ -9,17 +9,19 @@
   # dependencies
   filelock,
   fsspec,
+  httpx,
   packaging,
   pyyaml,
-  requests,
+  shellingham,
   tqdm,
+  typer-slim,
   typing-extensions,
 
   # optional-dependencies
-  # cli
-  inquirerpy,
-  # inference
-  aiohttp,
+  # oauth
+  authlib,
+  fastapi,
+  itsdangerous,
   # torch
   torch,
   safetensors,
@@ -29,26 +31,20 @@
   toml,
   fastai,
   fastcore,
-  # tensorflow
-  tensorflow,
-  pydot,
-  graphviz,
-  # tensorflow-testing
-  keras,
   # hf-xet
   hf-xet,
 }:
 
 buildPythonPackage rec {
   pname = "huggingface-hub";
-  version = "0.34.4";
+  version = "1.2.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "huggingface_hub";
     tag = "v${version}";
-    hash = "sha256-2R4G/2VBj/URVdVn/1dPBDdFCdXZymPc2zdbzddyYwU=";
+    hash = "sha256-mYklnBsVL8CCMIuj9hy5DVY+Sf+w8XladUNaIKO/G2E=";
   };
 
   build-system = [ setuptools ];
@@ -56,20 +52,22 @@ buildPythonPackage rec {
   dependencies = [
     filelock
     fsspec
+    hf-xet
+    httpx
     packaging
     pyyaml
-    requests
+    shellingham
     tqdm
+    typer-slim
     typing-extensions
-    hf-xet
   ];
 
   optional-dependencies = {
-    cli = [
-      inquirerpy
-    ];
-    inference = [
-      aiohttp
+    oauth = [
+      authlib
+      fastapi
+      httpx
+      itsdangerous
     ];
     torch = [
       torch
@@ -84,15 +82,6 @@ buildPythonPackage rec {
       fastai
       fastcore
     ];
-    tensorflow = [
-      tensorflow
-      pydot
-      graphviz
-    ];
-    tensorflow-testing = [
-      tensorflow
-      keras
-    ];
     hf_xet = [
       hf-xet
     ];
@@ -105,7 +94,7 @@ buildPythonPackage rec {
 
   meta = {
     description = "Download and publish models and other files on the huggingface.co hub";
-    mainProgram = "huggingface-cli";
+    mainProgram = "hf";
     homepage = "https://github.com/huggingface/huggingface_hub";
     changelog = "https://github.com/huggingface/huggingface_hub/releases/tag/v${version}";
     license = lib.licenses.asl20;
