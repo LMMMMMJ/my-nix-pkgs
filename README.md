@@ -13,11 +13,11 @@
 - `codex` - OpenAI的AI编程助手，轻量级编程代理，直接在终端中运行
 
 ### HuggingFace 家族包
-- `hf-xet` (v1.1.8) - Xet 客户端技术，用于 huggingface-hub
-- `huggingface-hub` (v0.34.4) - HuggingFace Hub 客户端库
-- `tokenizers` (v0.21.1) - 快速、现代的分词器库
-- `transformers` (v4.55.2) - 最新的 Transformer 模型库
-- `sentence-transformers` (v5.1.0) - 句子嵌入和语义搜索库
+- `hf-xet` (v1.2.0) - Xet 客户端技术，用于 huggingface-hub
+- `huggingface-hub` (v1.2.2) - HuggingFace Hub 客户端库
+- `tokenizers` (v0.22.2) - 快速、现代的分词器库
+- `transformers` (v5.0.0rc1) - 最新的 Transformer 模型库
+- `sentence-transformers` (v5.2.0) - 句子嵌入和语义搜索库
 
 ## 在其他项目中使用
 
@@ -34,7 +34,7 @@
 ```nix
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     my-nix-pkgs = {
       url = "path:/home/jacob/project/my-nix-pkgs";  # 本地路径
       # 或者远程仓库：
@@ -104,7 +104,7 @@
 ```nix
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     # 集成我们的库作为外部 flake
     my-nix-pkgs = {
       url = "github:LMMMMMJ/my-nix-pkgs";
@@ -216,7 +216,7 @@ mkdir my-ai-project && cd my-ai-project
 cat > flake.nix << 'EOF'
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     my-nix-pkgs.url = "github:LMMMMMJ/my-nix-pkgs";
   };
   
@@ -571,18 +571,18 @@ direnv allow
 
 ### 🚀 最新版本
 - **codex v0.41.0** - OpenAI AI编程助手，通过外部flake自动更新，基于nixpkgs-unstable
-- **sentence-transformers v5.1.0** - 支持 ONNX 和 OpenVINO 后端，提供 2-3x 加速
-- **transformers v4.55.2** - 最新的模型支持和功能
-- **huggingface-hub v0.34.4** - 完整的 Hub 功能支持
-- **tokenizers v0.21.1** - 快速分词性能
-- **hf-xet v1.1.8** - 包含 Rust 补丁，解决编译问题
+- **sentence-transformers v5.2.0** - 支持 ONNX 和 OpenVINO 后端，提供 2-3x 加速
+- **transformers v5.0.0rc1** - 最新的模型支持和功能
+- **huggingface-hub v1.2.2** - 完整的 Hub 功能支持，新增 typer-slim CLI
+- **tokenizers v0.22.2** - 快速分词性能
+- **hf-xet v1.2.0** - Xet 客户端技术
 
 ### 🔧 技术特点
 - 所有包都有正确的依赖关系配置
 - 自动处理版本兼容性
 - 包含必要的运行时修复
 - 统一的包管理结构
-- **混合nixpkgs版本支持**: 项目主体使用稳定的nixos-24.11，而codex使用nixpkgs-unstable获得最新工具链支持
+- **混合nixpkgs版本支持**: 项目主体使用稳定的nixos-25.11，而codex使用nixpkgs-unstable获得最新工具链支持
 - **外部flake集成**: 无缝集成第三方flake包，保持项目模块化
 - **多种集成方式**: 提供Overlay、外部Flake、NixOS系统三种集成方式，适应不同使用场景
 - **开箱即用的开发环境**: 提供完整的shellHook和版本检测，快速验证环境配置
@@ -609,10 +609,12 @@ cd pkgs/claude-code-router && ./update.sh
 ### 版本信息
 
 当前包版本：
-- **claude-code**: v1.0.126
-- **claude-code-router**: v1.0.50
-- **gemini-cli**: v0.5.5
+- **claude-code**: v2.0.67
+- **claude-code-router**: v1.0.72
+- **gemini-cli**: v0.20.0
 - **codex**: v0.41.0 (通过外部flake自动更新)
-- **sentence-transformers**: v5.1.0
-- **transformers**: v4.55.2
-- **huggingface-hub**: v0.34.4 
+- **sentence-transformers**: v5.2.0
+- **transformers**: v5.0.0rc1
+- **huggingface-hub**: v1.2.2
+- **tokenizers**: v0.22.2
+- **hf-xet**: v1.2.0 
