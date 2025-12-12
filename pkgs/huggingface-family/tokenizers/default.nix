@@ -71,23 +71,15 @@ let
 in
 buildPythonPackage rec {
   pname = "tokenizers";
-  version = "0.21.1";
+  version = "0.22.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "tokenizers";
     tag = "v${version}";
-    hash = "sha256-3S7ZCaZnnwyNjoZ4Y/q3ngQE2MIm2iyCCjYAkdMVG2A=";
+    hash = "sha256-krc+FUA5H3J7L4D1xyjyFMpjXMU8TEfwdfRT4+uvti8=";
   };
-
-  # TestUnigram.test_continuing_prefix_trainer_mismatch fails with:
-  # Exception: No such file or directory (os error 2)
-  # Fix submitted upstream: https://github.com/huggingface/tokenizers/pull/1747
-  postPatch = ''
-    substituteInPlace tests/bindings/test_trainers.py \
-      --replace-fail '"data/' '"tests/data/'
-  '';
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit
@@ -96,7 +88,7 @@ buildPythonPackage rec {
       src
       sourceRoot
       ;
-    hash = "sha256-I7LlBmeVY2rWI0ta6x311iAurQKuutsClrbUgkt9xWk=";
+    hash = "sha256-anYZ7M5OvLOOHDy+sLuZlHQ/cNTk6xHksBHSHa75iY4=";
   };
 
   sourceRoot = "${src.name}/bindings/python";

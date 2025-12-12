@@ -26,14 +26,14 @@
 
 buildPythonPackage rec {
   pname = "sentence-transformers";
-  version = "5.1.0";
+  version = "5.2.0";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "UKPLab";
+    owner = "huggingface";
     repo = "sentence-transformers";
     tag = "v${version}";
-    hash = "sha256-snowpTdHelcFjo1+hvqpoVt5ROB0f91yt0GsIvA5cso=";
+    hash = "sha256-WD5uTfAbDYYeSXlgznSs4XyN1fAILxILmmSHmLosmV4=";
   };
 
   build-system = [ setuptools ];
@@ -71,8 +71,8 @@ buildPythonPackage rec {
 
   meta = {
     description = "Multilingual Sentence & Image Embeddings with BERT";
-    homepage = "https://github.com/UKPLab/sentence-transformers";
-    changelog = "https://github.com/UKPLab/sentence-transformers/releases/tag/${src.tag}";
+    homepage = "https://github.com/huggingface/sentence-transformers";
+    changelog = "https://github.com/huggingface/sentence-transformers/releases/tag/${src.tag}";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ dit7ya ];
   };

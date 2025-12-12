@@ -9,27 +9,17 @@
 
 buildPythonPackage rec {
   pname = "hf-xet";
-  version = "1.1.8";
+  version = "1.2.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "xet-core";
     tag = "v${version}";
-    hash = "sha256-6KANNPFFZCpmDPnMgIBDBypYkkkeI0Las7BFiCHwzXI=";
+    hash = "sha256-nRxLVCJF3meoVa1mc3jt0hJUFDwfSFl7U/fFLDQL44M=";
   };
 
   sourceRoot = "${src.name}/hf_xet";
-
-  # Fix unstable feature usage - use stable alternative
-  postPatch = ''
-    cd ..
-    # Replace unstable entry.insert_entry with stable pattern  
-    substituteInPlace progress_tracking/src/aggregator.rs \
-      --replace "entry.insert_entry(self.pending.item_updates.len());" \
-                "{ entry.insert(self.pending.item_updates.len()); };"
-    cd hf_xet
-  '';
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit
@@ -38,7 +28,7 @@ buildPythonPackage rec {
       src
       sourceRoot
       ;
-    hash = "sha256-G/O2PxdXDCFBSy0PvC8uvRhWib4+DAKPeK5WNV1gxAY=";
+    hash = "sha256-xMfsd7xOghktQu/do7TMmkUx4uTBHPK44XODePluUgc=";
   };
 
   nativeBuildInputs = [
