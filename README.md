@@ -609,10 +609,11 @@ cd pkgs/claude-code-router && ./update.sh
 ### 版本信息
 
 当前包版本：
-- **claude-code**: v2.0.67
-- **claude-code-router**: v1.0.72
-- **gemini-cli**: v0.20.0
+- **claude-code**: v2.0.76
+- **claude-code-router**: v1.0.73
+- **gemini-cli**: v0.22.5
 - **codex**: v0.41.0 (通过外部flake自动更新)
+- **tushare**: v1.4.24
 - **sentence-transformers**: v5.2.0
 - **transformers**: v5.0.0rc1
 - **huggingface-hub**: v1.2.2
