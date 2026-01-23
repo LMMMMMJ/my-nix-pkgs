@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    codex-nix.url = "github:sadjow/codex-nix";
+    codex-nix.url = "github:sadjow/codex-cli-nix";
     utils.url = "github:numtide/flake-utils";
   };
 
