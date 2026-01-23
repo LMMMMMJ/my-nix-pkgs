@@ -14,7 +14,7 @@
 
 ### HuggingFace 家族包
 - `hf-xet` (v1.2.0) - Xet 客户端技术，用于 huggingface-hub
-- `huggingface-hub` (v1.2.2) - HuggingFace Hub 客户端库
+- `huggingface-hub` (v1.3.3) - HuggingFace Hub 客户端库
 - `tokenizers` (v0.22.2) - 快速、现代的分词器库
 - `transformers` (v5.0.0rc1) - 最新的 Transformer 模型库
 - `sentence-transformers` (v5.2.0) - 句子嵌入和语义搜索库
@@ -573,7 +573,7 @@ direnv allow
 - **codex v0.41.0** - OpenAI AI编程助手，通过外部flake自动更新，基于nixpkgs-unstable
 - **sentence-transformers v5.2.0** - 支持 ONNX 和 OpenVINO 后端，提供 2-3x 加速
 - **transformers v5.0.0rc1** - 最新的模型支持和功能
-- **huggingface-hub v1.2.2** - 完整的 Hub 功能支持，新增 typer-slim CLI
+- **huggingface-hub v1.3.3** - 完整的 Hub 功能支持，新增 typer-slim CLI
 - **tokenizers v0.22.2** - 快速分词性能
 - **hf-xet v1.2.0** - Xet 客户端技术
 
@@ -609,13 +609,13 @@ cd pkgs/claude-code-router && ./update.sh
 ### 版本信息
 
 当前包版本：
-- **claude-code**: v2.0.76
-- **claude-code-router**: v1.0.73
-- **gemini-cli**: v0.22.5
+- **claude-code**: v2.1.17
+- **claude-code-router**: v2.0.0
+- **gemini-cli**: v0.25.1
 - **codex**: v0.41.0 (通过外部flake自动更新)
 - **tushare**: v1.4.24
 - **sentence-transformers**: v5.2.0
 - **transformers**: v5.0.0rc1
-- **huggingface-hub**: v1.2.2
+- **huggingface-hub**: v1.3.3
 - **tokenizers**: v0.22.2
 - **hf-xet**: v1.2.0 
