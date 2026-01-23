@@ -9,13 +9,13 @@
         "lastModified": 1769120812,
         "narHash": "sha256-U4G0VY1D3zyMo+W291Yu2/D8Ins1iOGXNuM+r11W1oY=",
         "owner": "sadjow",
-        "repo": "codex-nix",
+        "repo": "codex-cli-nix",
         "rev": "e8854421ecb1fb7eab47c8741f731e118bdec367",
         "type": "github"
       },
       "original": {
         "owner": "sadjow",
-        "repo": "codex-nix",
+        "repo": "codex-cli-nix",
         "type": "github"
       }
     },
