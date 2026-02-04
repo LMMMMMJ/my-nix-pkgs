@@ -13,11 +13,11 @@
 - `codex` - OpenAI的AI编程助手，轻量级编程代理，直接在终端中运行
 
 ### HuggingFace 家族包
-- `hf-xet` (v1.2.0) - Xet 客户端技术，用于 huggingface-hub
-- `huggingface-hub` (v1.3.3) - HuggingFace Hub 客户端库
-- `tokenizers` (v0.22.2) - 快速、现代的分词器库
-- `transformers` (v5.0.0rc1) - 最新的 Transformer 模型库
-- `sentence-transformers` (v5.2.0) - 句子嵌入和语义搜索库
+- `hf-xet` - Xet 客户端技术，用于 huggingface-hub
+- `huggingface-hub` - HuggingFace Hub 客户端库
+- `tokenizers` - 快速、现代的分词器库
+- `transformers` - 最新的 Transformer 模型库
+- `sentence-transformers` - 句子嵌入和语义搜索库
 
 ## 在其他项目中使用
 
@@ -569,14 +569,6 @@ direnv allow
 
 ## 特性
 
-### 🚀 最新版本
-- **codex v0.41.0** - OpenAI AI编程助手，通过外部flake自动更新，基于nixpkgs-unstable
-- **sentence-transformers v5.2.0** - 支持 ONNX 和 OpenVINO 后端，提供 2-3x 加速
-- **transformers v5.0.0rc1** - 最新的模型支持和功能
-- **huggingface-hub v1.3.3** - 完整的 Hub 功能支持，新增 typer-slim CLI
-- **tokenizers v0.22.2** - 快速分词性能
-- **hf-xet v1.2.0** - Xet 客户端技术
-
 ### 🔧 技术特点
 - 所有包都有正确的依赖关系配置
 - 自动处理版本兼容性
@@ -593,29 +585,3 @@ direnv allow
 - 使用 `nix flake check` 验证配置
 - 使用 `nix build .#package-name` 测试特定包
 - 定期检查上游包更新
-
-### 包更新脚本
-
-项目中包含了自动更新脚本：
-
-```bash
-# 更新 claude-code 到最新版本
-cd pkgs/claude-code && ./update.sh
-
-# 更新 claude-code-router 到最新版本
-cd pkgs/claude-code-router && ./update.sh
-```
-
-### 版本信息
-
-当前包版本：
-- **claude-code**: v2.1.17
-- **claude-code-router**: v2.0.0
-- **gemini-cli**: v0.25.1
-- **codex**: v0.41.0 (通过外部flake自动更新)
-- **tushare**: v1.4.24
-- **sentence-transformers**: v5.2.0
-- **transformers**: v5.0.0rc1
-- **huggingface-hub**: v1.3.3
-- **tokenizers**: v0.22.2
-- **hf-xet**: v1.2.0 
