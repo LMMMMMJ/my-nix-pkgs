@@ -35,8 +35,6 @@ buildNpmPackage rec {
       --unset DEV
   '';
 
-  passthru.updateScript = ./update.sh;
-
   meta = {
     description = "Agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster";
     homepage = "https://github.com/anthropics/claude-code";
