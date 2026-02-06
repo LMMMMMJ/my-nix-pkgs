@@ -23,7 +23,6 @@
           ];
           # Add non-Python packages here
           claude-code = final.callPackage ./pkgs/claude-code { };
-          claude-code-router = final.callPackage ./pkgs/claude-code-router { };
           gemini-cli = final.callPackage ./pkgs/gemini-cli { };
           # Use external codex-nix instead of local package
           codex = codex-nix.packages.${final.system}.default;
@@ -54,8 +53,6 @@
           pydantic-core = pkgs.python3Packages.pydantic-core;
           # Add claude-code package
           claude-code = pkgs.claude-code;
-          # Add claude-code-router package
-          claude-code-router = pkgs.claude-code-router;
           # Add gemini-cli package
           gemini-cli = pkgs.gemini-cli;
           # Add codex package from external flake
