@@ -3,11 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    codex-nix.url = "github:sadjow/codex-cli-nix";
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, codex-nix, ... }@inputs:
+  outputs = { self, nixpkgs, ... }@inputs:
     {
       overlays = {
         # It is recommended that the downstream user apply overlays.default directly.
@@ -17,15 +16,14 @@
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
-            } 
+            }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
           ];
           # Add non-Python packages here
           claude-code = final.callPackage ./pkgs/claude-code { };
           gemini-cli = final.callPackage ./pkgs/gemini-cli { };
-          # Use external codex-nix instead of local package
-          codex = codex-nix.packages.${final.system}.default;
+          codex = final.callPackage ./pkgs/codex { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] (system:
@@ -36,9 +34,7 @@
           overlays = [ self.overlays.default ];
         };
       in {
-        devShells.default = pkgs.callPackage ./pkgs/dev-shell { 
-          codex = codex-nix.packages.${system}.default;
-        };
+        devShells.default = pkgs.callPackage ./pkgs/dev-shell { };
 
         packages = {
           # Expose packages for direct building
@@ -55,8 +51,8 @@
           claude-code = pkgs.claude-code;
           # Add gemini-cli package
           gemini-cli = pkgs.gemini-cli;
-          # Add codex package from external flake
-          codex = codex-nix.packages.${system}.default;
+          # Add codex package
+          codex = pkgs.codex;
         };
       });
 } 
