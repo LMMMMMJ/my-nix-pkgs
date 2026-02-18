@@ -8,6 +8,7 @@
   gzip,
   openssl,
   libcap,
+  zlib,
 }:
 
 let
@@ -47,7 +48,7 @@ stdenv.mkDerivation {
   dontStrip = true;
 
   nativeBuildInputs = [ gnutar gzip ] ++ lib.optionals stdenv.isLinux [ patchelf ];
-  buildInputs = lib.optionals stdenv.isLinux [ openssl libcap ];
+  buildInputs = lib.optionals stdenv.isLinux [ openssl libcap zlib ];
 
   buildPhase = ''
     runHook preBuild
@@ -59,7 +60,7 @@ stdenv.mkDerivation {
     ${lib.optionalString stdenv.isLinux ''
     patchelf \
       --set-interpreter "$(cat ${stdenv.cc}/nix-support/dynamic-linker)" \
-      --set-rpath "${lib.makeLibraryPath [ openssl libcap ]}" \
+      --set-rpath "${lib.makeLibraryPath [ openssl libcap zlib ]}" \
       build/codex
     ''}
 
