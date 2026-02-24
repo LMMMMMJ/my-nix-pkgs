@@ -32,7 +32,6 @@ buildNpmPackage rec {
   postInstall = ''
     wrapProgram $out/bin/claude \
       --set DISABLE_AUTOUPDATER 1 \
-      --set DISABLE_INSTALLATION_CHECKS 1 \
       --unset DEV
   '';
 
