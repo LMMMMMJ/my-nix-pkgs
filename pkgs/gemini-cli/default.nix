@@ -1,5 +1,6 @@
 {
   lib,
+  stdenv,
   buildNpmPackage,
   fetchFromGitHub,
   ripgrep,
@@ -23,11 +24,13 @@ buildNpmPackage (finalAttrs: {
 
   nativeBuildInputs = [
     jq
+  ] ++ lib.optionals stdenv.isLinux [
     pkg-config
   ];
 
   buildInputs = [
     ripgrep
+  ] ++ lib.optionals stdenv.isLinux [
     libsecret
   ];
 
