@@ -68,6 +68,7 @@ stdenv.mkDerivation {
     cat > $out/bin/claude << 'WRAPPER_EOF'
 #!${bash}/bin/bash
 export DISABLE_AUTOUPDATER=1
+export DISABLE_INSTALLATION_CHECKS=1
 exec "$out/bin/claude-raw" "$@"
 WRAPPER_EOF
     chmod +x $out/bin/claude
