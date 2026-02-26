@@ -24,6 +24,7 @@
           claude-code = final.callPackage ./pkgs/claude-code { };
           gemini-cli = final.callPackage ./pkgs/gemini-cli { };
           codex = final.callPackage ./pkgs/codex { };
+          openclaw = final.callPackage ./pkgs/openclaw { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] (system:
@@ -53,6 +54,7 @@
           gemini-cli = pkgs.gemini-cli;
           # Add codex package
           codex = pkgs.codex;
+          openclaw = pkgs.openclaw;
         };
       });
 } 
