@@ -2,14 +2,14 @@
 , requests, six, pandas, cachetools, protobuf, lxml, beautifulsoup4, tqdm }:
 let
   url =
-    "https://files.pythonhosted.org/packages/80/75/63810958023595b460f2a5ef6baf5a60ffd8166e5fc06a3c2f22e9ca7b34/tushare-1.4.24-py3-none-any.whl";
+    "https://files.pythonhosted.org/packages/df/6d/a42651d8c610fcaa579985d6525609bc227bbf3895e2a4f41fe236e335bc/tushare-1.4.25-py3-none-any.whl";
 in buildPythonPackage rec {
   pname = "tushare";
-  version = "1.4.24";
+  version = "1.4.25";
   format = "wheel";
   src = builtins.fetchurl {
     inherit url;
-    sha256 = "sha256:020v8lj28rbn4zggnkwv4c6546ndwsjybhnsv86cnir74ql333kp";
+    sha256 = "sha256-LdH76Gib9j2Dgkj6NMHjAfDE8HaN3VFdX5c0f+EJaT4=";
   };
 
   build-system = [ setuptools ];
