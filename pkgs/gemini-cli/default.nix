@@ -11,16 +11,16 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "gemini-cli";
-  version = "0.30.0";
+  version = "0.31.0";
 
   src = fetchFromGitHub {
     owner = "google-gemini";
     repo = "gemini-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-+w4w1cftPSj0gJ23Slw8Oexljmu0N/PZWH4IDjw75rs=";
+    hash = "sha256-huPd4W7Jf4/dZshWElicYpcHhktE83wPs/z5jVYwynM=";
   };
 
-  npmDepsHash = "sha256-Nkd5Q2ugRqsTqaFbCSniC3Obl++uEjVUmoa8MVT5++8=";
+  npmDepsHash = "sha256-iRlwCSGigRi/ilfXi8rI68vlfkeec3vB5nZWPmTLnK8=";
 
   nativeBuildInputs = [
     jq
@@ -35,8 +35,17 @@ buildNpmPackage (finalAttrs: {
   ];
 
   preConfigure = ''
-    mkdir -p packages/generated
-    echo "export const GIT_COMMIT_INFO = { commitHash: '${finalAttrs.src.rev}' };" > packages/generated/git-commit.ts
+    npm run generate
+  '';
+
+  dontNpmBuild = true;
+
+  preInstall = ''
+    npm run build --workspace @google/gemini-cli-devtools
+    npm run build --workspace @google/gemini-cli-core
+    npm run build --workspace @google/gemini-cli-sdk
+    npm run build --workspace @google/gemini-cli-a2a-server
+    npm run build --workspace @google/gemini-cli
   '';
 
   installPhase = ''
@@ -55,6 +64,8 @@ buildNpmPackage (finalAttrs: {
     cp -r packages/core $out/share/gemini-cli/node_modules/@google/gemini-cli-core
     cp -r packages/a2a-server $out/share/gemini-cli/node_modules/@google/gemini-cli-a2a-server
     cp -r packages/sdk $out/share/gemini-cli/node_modules/@google/gemini-cli-sdk
+    mkdir -p $out/share/gemini-cli/packages
+    cp -r packages/devtools $out/share/gemini-cli/packages/devtools
 
     # Remove broken symlinks that point to /build directory
     rm -f $out/share/gemini-cli/node_modules/@google/gemini-cli-core/dist/docs/CONTRIBUTING.md
