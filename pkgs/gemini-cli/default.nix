@@ -3,6 +3,7 @@
   stdenv,
   buildNpmPackage,
   fetchFromGitHub,
+  nodejs,
   ripgrep,
   jq,
   pkg-config,
@@ -70,7 +71,10 @@ buildNpmPackage (finalAttrs: {
     # Remove broken symlinks that point to /build directory
     rm -f $out/share/gemini-cli/node_modules/@google/gemini-cli-core/dist/docs/CONTRIBUTING.md
 
-    ln -s $out/share/gemini-cli/node_modules/@google/gemini-cli/dist/index.js $out/bin/gemini
+    cat > $out/bin/gemini <<EOF
+    #!${stdenv.shell}
+    exec ${nodejs}/bin/node "$out/share/gemini-cli/node_modules/@google/gemini-cli/dist/index.js" "\$@"
+    EOF
     chmod +x "$out/bin/gemini"
 
     runHook postInstall
