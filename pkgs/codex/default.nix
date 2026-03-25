@@ -12,7 +12,7 @@
 }:
 
 let
-  version = "0.114.0";
+  version = "0.116.0";
 
   platformMap = {
     "aarch64-darwin" = "aarch64-apple-darwin";
@@ -24,10 +24,10 @@ let
   platform = platformMap.${stdenv.hostPlatform.system} or null;
 
   hashes = {
-    "aarch64-apple-darwin" = "0m3w56bh86x37ww24mdmbsqsr0vanyhp36fz4znfm6azd58bb3n9";
-    "x86_64-apple-darwin" = "0x69rb9d9s3x0zjr0w3l96wdfrhp99dvj35wa30yr4rndsgwxixh";
-    "x86_64-unknown-linux-gnu" = "1q1aqp9sf8aaz8xjy0p5wna5m9xp60q2pijdmpjyjmk7vba990pi";
-    "aarch64-unknown-linux-gnu" = "1fsh67v2rf096z3z6rack3p91axgr0iqd7pkqpsdif2h5k9zy8y9";
+    "aarch64-apple-darwin" = "1xcjz3y20xrzx45vmzv8a9n2x332kila6z5x65m2z6r0ybskb1ql";
+    "x86_64-apple-darwin" = "0jhvfzrd1bdd5ajm89xkp3f9ynkzdcn2mkc5aspl2mzznaf1b050";
+    "x86_64-unknown-linux-gnu" = "0m6rvvl2jvlr4nl3c63z7xlb16yw9rcm5m95rsv95kfsw9mcnz4w";
+    "aarch64-unknown-linux-gnu" = "1z11wh08s27bz96mqs5y7wa2d9qzlg1bsnip3p4b6d1x0ha9wpjc";
   };
 
   binaryUrl = "https://github.com/openai/codex/releases/download/rust-v${version}/codex-${platform}.tar.gz";
