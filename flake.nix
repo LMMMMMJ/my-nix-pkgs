@@ -16,6 +16,7 @@
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
+              xtquant = python-final.callPackage ./pkgs/xtquant { };
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
@@ -55,6 +56,7 @@
           # Add codex package
           codex = pkgs.codex;
           openclaw = pkgs.openclaw;
+          xtquant = pkgs.python3Packages.xtquant;
         };
       });
 } 
