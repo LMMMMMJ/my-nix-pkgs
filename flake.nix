@@ -17,6 +17,7 @@
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
               xtquant = python-final.callPackage ./pkgs/xtquant { };
+              regex = python-final.callPackage ./pkgs/regex { };
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
