@@ -11,10 +11,11 @@ This is a custom Nix flake providing packages not available or outdated in nixpk
 ## Common Commands
 
 ```bash
+# Build ALL packages at once (always use this instead of building one by one)
+nix build .#claude-code .#gemini-cli .#codex .#tushare .#pyexecjs .#xtquant .#hf-xet .#huggingface-hub .#tokenizers .#transformers .#sentence-transformers
+
 # Build a specific package
 nix build .#claude-code
-nix build .#tushare
-nix build .#sentence-transformers
 
 # Enter development shell (has all packages available)
 nix develop
