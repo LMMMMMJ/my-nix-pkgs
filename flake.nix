@@ -62,6 +62,10 @@
                 # 测试 fixture 与 NixOS 沙盒文件系统模型不兼容；它通过 spacy 等链路被传递依赖。
                 cloudpathlib = python-prev.cloudpathlib.overridePythonAttrs (_: { doCheck = false; });
 
+                # linear-operator test_psd_safe_cholesky_*_cuda 用例在 sandbox / 小显存机器上
+                # 触发 CUDA OOM；它是 gpytorch/botorch 链路的传递依赖。
+                linear-operator = python-prev.linear-operator.overridePythonAttrs (_: { doCheck = false; });
+
                 # ===== my-nix-pkgs 自有 Python 包 =====
                 tushare = python-final.callPackage ./pkgs/tushare { };
                 pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
