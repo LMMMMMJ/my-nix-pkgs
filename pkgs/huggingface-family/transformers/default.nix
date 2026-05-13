@@ -59,17 +59,24 @@
 
 buildPythonPackage rec {
   pname = "transformers";
-  version = "5.5.4";
+  version = "5.8.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "transformers";
     tag = "v${version}";
-    hash = "sha256-ZqynYPj8VxH6BmvxHuw3lq16e2FFi3p8pw5of+vkz40=";
+    hash = "sha256-IX4hl9LKxbzSYvreRfhFYrqAq6zxAM9HYSRUUiCNDAg=";
   };
 
   build-system = [ setuptools ];
+
+  pythonRelaxDeps = [ "tokenizers" ];
+
+  postPatch = ''
+    substituteInPlace setup.py src/transformers/dependency_versions_table.py \
+      --replace-fail 'tokenizers>=0.22.0,<=0.23.0' 'tokenizers>=0.22.0,<0.24.0'
+  '';
 
   dependencies = [
     filelock
