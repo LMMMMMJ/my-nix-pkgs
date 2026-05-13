@@ -2,21 +2,22 @@
   lib,
   buildNpmPackage,
   fetchzip,
+  makeWrapper,
   nodejs_20,
 }:
 
 buildNpmPackage rec {
   pname = "claude-code";
-  version = "2.1.112";
+  version = "2.1.140";
 
   nodejs = nodejs_20; # required for sandboxed Nix builds on Darwin
 
   src = fetchzip {
     url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-    hash = "sha256-SJJqU7XHbu9IRGPMJNUg6oaMZiQUKqJhI2wm7BnR1gs=";
+    hash = "sha256-TPTrpyB7rCTs53zhc/F4jnbNdo+cw33ZHC5wzyQDing=";
   };
 
-  npmDepsHash = "sha256-bdkej9Z41GLew9wi1zdNX+Asauki3nT1+SHmBmaUIBU=";
+  npmDepsHash = "sha256-3xy2vt2gypmcGz6a/wPRDHz5OwYVCOyC0iiyHHIaOKw=";
 
   postPatch = ''
     cp ${./package-lock.json} package-lock.json
@@ -26,11 +27,17 @@ buildNpmPackage rec {
 
   AUTHORIZED = "1";
 
-  # `claude-code` tries to auto-update by default, this disables that functionality.
-  # https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview#environment-variables
-  # The DEV=true env var causes claude to crash with `TypeError: window.WebSocket is not a constructor`
+  nativeBuildInputs = [ makeWrapper ];
+
+  # claude-code now ships a native binary at bin/claude.exe (postinstall script
+  # copies it from the platform-specific optionalDependency). The npm-generated
+  # launcher tries to `node claude.exe`, which fails — replace with a direct exec.
+  # DISABLE_AUTOUPDATER stops auto-updates; DEV=true crashes with WebSocket errors.
   postInstall = ''
-    wrapProgram $out/bin/claude \
+    rm -f $out/bin/claude $out/bin/.claude-wrapped
+    makeWrapper \
+      $out/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe \
+      $out/bin/claude \
       --set DISABLE_AUTOUPDATER 1 \
       --unset DEV
   '';
