@@ -20,6 +20,22 @@ nix build .#claude-code
 # Enter development shell (has all packages available)
 nix develop
 
+# After updating packages, ALWAYS verify in the dev shell — `nix build` only
+# checks the package builds; this confirms CLIs launch and Python modules import
+# at the expected versions.
+nix develop --command bash -c '
+  claude --version
+  gemini --version
+  codex --version
+  python3 -c "
+import importlib, importlib.metadata as md
+for pkg in [\"tushare\",\"execjs\",\"hf_xet\",\"huggingface_hub\",\"tokenizers\",\"transformers\",\"sentence_transformers\"]:
+    importlib.import_module(pkg)
+    try: v = md.version(pkg.replace(\"_\",\"-\"))
+    except Exception: v = \"unknown\"
+    print(f\"{pkg}: {v}\")
+"'
+
 # Validate flake configuration
 nix flake check
 
