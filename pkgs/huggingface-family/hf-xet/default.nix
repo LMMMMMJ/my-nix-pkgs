@@ -48,6 +48,11 @@ buildPythonPackage rec {
   # No tests (yet?)
   doCheck = false;
 
+  # 当注入 25.11 的 rust + maturin 时，产出的 wheel 包含 Metadata-Version: 2.4 字段，
+  # 而 nixpkgs 24.11 的 packaging 24.1 仅支持到 2.3 —— pythonRuntimeDepsCheckHook
+  # 解析失败但 wheel 实际可用。在 24.11 兼容场景下关闭该 hook 检查即可。
+  dontCheckRuntimeDeps = true;
+
   meta = {
     description = "Xet client tech, used in huggingface_hub";
     homepage = "https://github.com/huggingface/xet-core/tree/main/hf_xet";
