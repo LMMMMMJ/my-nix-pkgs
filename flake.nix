@@ -18,6 +18,7 @@
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
               xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
+              flash-attn = python-final.callPackage ./pkgs/flash-attn { };
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
@@ -56,6 +57,11 @@
           # Add codex package
           codex = pkgs.codex;
           xtquant = pkgs.python3Packages.xtquant;
+          # 注意：flash-attn 不在此处单独暴露 standalone package。
+          # 该 wheel 为 cu12torch2.5cxx11abiTRUE-cp312，仅在下游（research-incubator
+          # 通过 ml-pkgs.overlays.torch-family 提供匹配的 torch 2.5.1+cu12+cxx11）才能正常构建。
+          # 在 my-nix-pkgs 内 standalone build 会拉到 nixpkgs 25.11 的不兼容 torch，
+          # 既慢又无意义；overlay 已通过 pythonPackagesExtensions 注入，由 consumer 解析。
         };
       });
 } 
