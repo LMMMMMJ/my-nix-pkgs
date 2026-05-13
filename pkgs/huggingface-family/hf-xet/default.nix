@@ -9,14 +9,14 @@
 
 buildPythonPackage rec {
   pname = "hf-xet";
-  version = "1.4.3";
+  version = "1.5.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "xet-core";
-    tag = "v${version}";
-    hash = "sha256-zAliMR2d2j6ynHQmAljQ8XgDyjuPxNawI1bZks5aRgs=";
+    tag = version;
+    hash = "sha256-W48PKYVDpfPzT7wM8W2tQmz01BcM1v6rpENuwUvy4Sw=";
   };
 
   sourceRoot = "${src.name}/hf_xet";
@@ -28,7 +28,7 @@ buildPythonPackage rec {
       src
       sourceRoot
       ;
-    hash = "sha256-TOgBT0l7TvJamVdIAdAUFRWs8AMRRY+Ydoh6e+3dEp0=";
+    hash = "sha256-agZMRkUdPGX4A9K6em9XHABhAp5aPLaxqYMuTsE10GA=";
   };
 
   nativeBuildInputs = [
@@ -51,7 +51,7 @@ buildPythonPackage rec {
   meta = {
     description = "Xet client tech, used in huggingface_hub";
     homepage = "https://github.com/huggingface/xet-core/tree/main/hf_xet";
-    changelog = "https://github.com/huggingface/xet-core/releases/tag/v${version}";
+    changelog = "https://github.com/huggingface/xet-core/releases/tag/${version}";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ GaetanLepage ];
   };
