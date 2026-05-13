@@ -3,31 +3,27 @@
   stdenv,
   fetchurl,
   bash,
-  patchelf,
   gnutar,
   gzip,
-  openssl,
-  libcap,
-  zlib,
 }:
 
 let
-  version = "0.120.0";
+  version = "0.130.0";
 
   platformMap = {
     "aarch64-darwin" = "aarch64-apple-darwin";
     "x86_64-darwin" = "x86_64-apple-darwin";
-    "x86_64-linux" = "x86_64-unknown-linux-gnu";
-    "aarch64-linux" = "aarch64-unknown-linux-gnu";
+    "x86_64-linux" = "x86_64-unknown-linux-musl";
+    "aarch64-linux" = "aarch64-unknown-linux-musl";
   };
 
   platform = platformMap.${stdenv.hostPlatform.system} or null;
 
   hashes = {
-    "aarch64-apple-darwin" = "1w4m5halbs6489brxsrx98a264wdylswgf3z0n9a4bvmid1kq25i";
-    "x86_64-apple-darwin" = "02j6ir8q5i3py7csf1z31c5b4imqz7sfchfbi7rd27db6x2x971l";
-    "x86_64-unknown-linux-gnu" = "12iwc50shr9nj0k2636v68npak8rw5fymmvm6y0vzjp7vg4qr1qd";
-    "aarch64-unknown-linux-gnu" = "0zihkzgncjsl0jfdda3mfrrblg383qc8j1zdpxw5b82j80dbbq41";
+    "aarch64-apple-darwin" = "0xrmfg76n90cvi3ibqkh0y1hf4b0kdjy92ci2ycwmj50z6vs8l5w";
+    "x86_64-apple-darwin" = "0rsyml314zh1kkjg5fk18k33r176mgxk96xiiczximwnplbb3pgy";
+    "x86_64-unknown-linux-musl" = "140ihs7rnj09kc5dfvll4gn3dhzfhkhd9mrni9v8ll2pg1xrwxqn";
+    "aarch64-unknown-linux-musl" = "0ry7j9j2b0pym9mvq0991slj5c27140n275ppjsicc1cqbr00zhx";
   };
 
   binaryUrl = "https://github.com/openai/codex/releases/download/rust-v${version}/codex-${platform}.tar.gz";
@@ -47,8 +43,7 @@ stdenv.mkDerivation {
   dontPatchELF = true;
   dontStrip = true;
 
-  nativeBuildInputs = [ gnutar gzip ] ++ lib.optionals stdenv.isLinux [ patchelf ];
-  buildInputs = lib.optionals stdenv.isLinux [ openssl libcap zlib ];
+  nativeBuildInputs = [ gnutar gzip ];
 
   buildPhase = ''
     runHook preBuild
@@ -56,14 +51,6 @@ stdenv.mkDerivation {
     tar -xzf ${binary} -C build
     mv build/codex-${platform} build/codex
     chmod u+w,+x build/codex
-
-    ${lib.optionalString stdenv.isLinux ''
-    patchelf \
-      --set-interpreter "$(cat ${stdenv.cc}/nix-support/dynamic-linker)" \
-      --set-rpath "${lib.makeLibraryPath [ openssl libcap zlib ]}" \
-      build/codex
-    ''}
-
     runHook postBuild
   '';
 
