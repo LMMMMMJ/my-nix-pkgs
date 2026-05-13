@@ -58,6 +58,10 @@
                 # botorch test_cuda 同样需要 GPU；与 gpytorch 同链。
                 botorch = python-prev.botorch.overridePythonAttrs (_: { doCheck = false; });
 
+                # cloudpathlib 的 test_loc_dir[azure_rig] 用例在 sandbox 中找不到临时缓存目录，
+                # 测试 fixture 与 NixOS 沙盒文件系统模型不兼容；它通过 spacy 等链路被传递依赖。
+                cloudpathlib = python-prev.cloudpathlib.overridePythonAttrs (_: { doCheck = false; });
+
                 # ===== my-nix-pkgs 自有 Python 包 =====
                 tushare = python-final.callPackage ./pkgs/tushare { };
                 pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
