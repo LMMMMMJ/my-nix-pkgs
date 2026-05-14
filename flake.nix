@@ -76,6 +76,15 @@
                   dontUsePythonImportsCheck = true;
                 });
 
+                # JAX 生态（equinox / optax / flax）以及 PyTorch Lightning / torchmetrics 都属于
+                # "测试套件依赖完整 GPU runtime 才能通过 / 跑非常慢" 的类别。沙盒里逐个踩雷代价高，
+                # 一并关闭测试；下游 dev shell 使用 `import` 是 OK 的。
+                equinox = python-prev.equinox.overridePythonAttrs (_: { doCheck = false; });
+                optax = python-prev.optax.overridePythonAttrs (_: { doCheck = false; });
+                flax = python-prev.flax.overridePythonAttrs (_: { doCheck = false; });
+                pytorch-lightning = python-prev.pytorch-lightning.overridePythonAttrs (_: { doCheck = false; });
+                torchmetrics = python-prev.torchmetrics.overridePythonAttrs (_: { doCheck = false; });
+
                 # ===== my-nix-pkgs 自有 Python 包 =====
                 tushare = python-final.callPackage ./pkgs/tushare { };
                 pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
