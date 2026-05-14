@@ -68,8 +68,13 @@
 
                 # jax 的 GPU 测试套件（scipy_stats / pjit / python_callback 等近 3000 个）在
                 # 大多数沙盒/小显存机器上都会 "Failed to launch CUDA kernel" / RESOURCE_EXHAUSTED。
-                # jax 自身代码不依赖本地通过这些测试；用它的包（equinox/optax）只关心 import 正确。
-                jax = python-prev.jax.overridePythonAttrs (_: { doCheck = false; });
+                # `pythonImportsCheck` 在构建沙盒中执行 `import jax`，而 jax 在 24.11 的
+                # 沙盒里找不到 jaxlib（jaxlib 是单独包，runtime path 在 dev shell 里才完整），
+                # 所以同时关闭 import 检查；下游 dev shell 仍能正常 `import jax`。
+                jax = python-prev.jax.overridePythonAttrs (_: {
+                  doCheck = false;
+                  dontUsePythonImportsCheck = true;
+                });
 
                 # ===== my-nix-pkgs 自有 Python 包 =====
                 tushare = python-final.callPackage ./pkgs/tushare { };
