@@ -66,6 +66,11 @@
                 # 触发 CUDA OOM；它是 gpytorch/botorch 链路的传递依赖。
                 linear-operator = python-prev.linear-operator.overridePythonAttrs (_: { doCheck = false; });
 
+                # jax 的 GPU 测试套件（scipy_stats / pjit / python_callback 等近 3000 个）在
+                # 大多数沙盒/小显存机器上都会 "Failed to launch CUDA kernel" / RESOURCE_EXHAUSTED。
+                # jax 自身代码不依赖本地通过这些测试；用它的包（equinox/optax）只关心 import 正确。
+                jax = python-prev.jax.overridePythonAttrs (_: { doCheck = false; });
+
                 # ===== my-nix-pkgs 自有 Python 包 =====
                 tushare = python-final.callPackage ./pkgs/tushare { };
                 pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
