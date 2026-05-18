@@ -1,5 +1,6 @@
 { lib, buildPythonPackage, fetchPypi, setuptools, pythonOlder, autoPatchelfHook
-, requests, six, pandas, cachetools, protobuf, lxml, beautifulsoup4, tqdm }:
+, requests, six, pandas, cachetools, protobuf, lxml, beautifulsoup4, tqdm
+, simplejson, websocket-client }:
 let
   url =
     "https://files.pythonhosted.org/packages/33/3e/d426a56e5feac9b0aaada1c6b0745ed03422d4a713295e0bbb44c8ea86fe/tushare-1.4.29-py3-none-any.whl";
@@ -23,7 +24,12 @@ in buildPythonPackage rec {
     requests
     beautifulsoup4
     tqdm
+    simplejson
+    websocket-client
   ];
+  # Wheel metadata lists `bs4` (a stub for beautifulsoup4 on PyPI); nixpkgs
+  # only ships beautifulsoup4 directly, so drop the stub from the dep check.
+  pythonRemoveDeps = [ "bs4" ];
   doCheck = false;
   nativeBuildInputs = [ autoPatchelfHook ];
 
