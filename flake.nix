@@ -18,6 +18,7 @@
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
               xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
+              flash-attn = python-final.callPackage ./pkgs/flash-attention { };
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
@@ -56,6 +57,7 @@
           # Add codex package
           codex = pkgs.codex;
           xtquant = pkgs.python3Packages.xtquant;
+          flash-attn = pkgs.python3Packages.flash-attn;
         };
       });
 } 
