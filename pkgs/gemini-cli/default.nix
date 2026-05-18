@@ -21,7 +21,8 @@ buildNpmPackage (finalAttrs: {
     hash = "sha256-QYSzJdyjJ5SvPkI/uf/wu8MdM76W+djai6zD38IJpos=";
   };
 
-  npmDepsHash = "sha256-hKNEJ/MAseYs8WLr36h40pYv+5nef8EPhZIfmPKYJPY=";
+  npmDepsHash = "sha256-1Kl3Km61kKCxTVTVr8n0w/Wh75Cml7zrUI6Fq9yfBW4=";
+  npmDepsFetcherVersion = 2;
 
   nativeBuildInputs = [
     jq
