@@ -16,7 +16,7 @@
   regex,
   requests,
   tokenizers,
-  typer-slim,
+  typer,
   safetensors,
   tqdm,
 
@@ -87,7 +87,7 @@ buildPythonPackage rec {
     regex
     requests
     tokenizers
-    typer-slim
+    typer
     safetensors
     tqdm
   ];
