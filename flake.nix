@@ -19,6 +19,13 @@
               xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
               flash-attn = python-final.callPackage ./pkgs/flash-attention { };
+              torch = python-prev.torch.overrideAttrs (old: {
+                env = (old.env or { }) // {
+                  MAX_JOBS = "1";
+                  CMAKE_BUILD_PARALLEL_LEVEL = "1";
+                  DEBUG = "0";
+                };
+              });
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
