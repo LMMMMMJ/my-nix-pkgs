@@ -19,17 +19,10 @@
               xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
               flash-attn = python-final.callPackage ./pkgs/flash-attention { };
-              # Source-build PyTorch with CUDA. `cudaSupport` is a function arg —
-              # must go through `.override`, not `overrideAttrs`. The `overrideAttrs`
-              # then serializes the build (MAX_JOBS=1) and disables DEBUG to keep
-              # host RAM/disk pressure manageable during the multi-hour compile.
-              torch = (python-prev.torch.override { cudaSupport = true; }).overrideAttrs (old: {
-                env = (old.env or { }) // {
-                  MAX_JOBS = "1";
-                  CMAKE_BUILD_PARALLEL_LEVEL = "1";
-                  DEBUG = "0";
-                };
-              });
+              # Use upstream PyTorch binary wheel (torch-bin) so we get a CUDA-enabled
+              # build without recompiling torch from source. The wheel ships
+              # torch-2.x+cuXYZ and links against nixpkgs cudaPackages.
+              torch = python-prev.torch-bin;
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; })
