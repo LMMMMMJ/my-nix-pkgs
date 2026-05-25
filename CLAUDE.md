@@ -114,7 +114,7 @@ Each package change gets its own commit. Commit messages follow these patterns:
 - **Remove package:** `<package>: remove package`
 - **Flake lock update:** `flake.lock: update nixpkgs <old-date> -> <new-date>`
 
-## Multi-branch Update Workflow
+## Multi-branch Sync Workflow
 
 This repo maintains three long-lived branches that pin different `nixpkgs` channels:
 
@@ -124,12 +124,14 @@ This repo maintains three long-lived branches that pin different `nixpkgs` chann
 | `nixos-25.11` | `nixos-25.11` | Stable channel; no `torch` override |
 | `nixos-24.11` | `nixos-24.11` (+ `nixpkgs-newer` = `nixos-25.11`) | Compatibility branch with backport overlay |
 
-**Every package update must be propagated across all three branches in this order:**
+**By default, only work on the current branch.** Do not propagate changes elsewhere unless the user explicitly asks to sync across branches (e.g. "update all branches", "把更新同步到 nixos-25.11 和 24.11").
+
+When the user does request a multi-branch sync, follow this order:
 
 1. **`master` first.** Apply the update, build, run the dev-shell verification block, commit per the conventions above, then `git push`.
-2. **`nixos-25.11` next.** Switch to the branch and either cherry-pick the master commit(s) or re-apply by hand. Re-run `nix build` + dev-shell verification (the pinned `nixpkgs` differs, so hashes/dependencies may diverge). Commit and push.
+2. **`nixos-25.11` next.** Cherry-pick the master commits (or re-apply by hand). Re-run `nix build` + dev-shell verification — the pinned `nixpkgs` differs, so hashes/dependencies may diverge. Commit and push.
 3. **`nixos-24.11` last.** Same flow; this branch is a *compatibility* branch — if upstream requires a toolchain newer than what 24.11 + `nixpkgs-newer` can supply, **skip the update on this branch** rather than forcing it. Note the skip in the push summary.
 
-CLAUDE.md changes themselves are part of this rotation: a workflow rule only takes effect on the branch where it lives, so port doc updates to all three branches too.
+CLAUDE.md itself should stay identical across the three branches — when you do edit it, port the same change to all three so future sessions on any branch see the same guidance.
 
 When in doubt about whether an upgrade is safe on an older branch, prefer "skip + report" over a speculative bump.
