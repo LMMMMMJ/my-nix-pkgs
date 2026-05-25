@@ -19,7 +19,11 @@
               xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
               flash-attn = python-final.callPackage ./pkgs/flash-attention { };
-              torch = python-prev.torch.overrideAttrs (old: {
+              # Source-build PyTorch with CUDA. `cudaSupport` is a function arg —
+              # must go through `.override`, not `overrideAttrs`. The `overrideAttrs`
+              # then serializes the build (MAX_JOBS=1) and disables DEBUG to keep
+              # host RAM/disk pressure manageable during the multi-hour compile.
+              torch = (python-prev.torch.override { cudaSupport = true; }).overrideAttrs (old: {
                 env = (old.env or { }) // {
                   MAX_JOBS = "1";
                   CMAKE_BUILD_PARALLEL_LEVEL = "1";
