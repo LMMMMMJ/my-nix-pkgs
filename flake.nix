@@ -114,6 +114,7 @@
             claude-code = final.callPackage ./pkgs/claude-code { };
             gemini-cli = final.callPackage ./pkgs/gemini-cli { };
             codex = final.callPackage ./pkgs/codex { };
+            baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
           };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] (system:
@@ -143,6 +144,8 @@
           gemini-cli = pkgs.gemini-cli;
           # Add codex package
           codex = pkgs.codex;
+          # Add baidupcs-go package
+          baidupcs-go = pkgs.baidupcs-go;
           xtquant = pkgs.python3Packages.xtquant;
           # 注意：flash-attn 不在此处单独暴露 standalone package。
           # 该 wheel 为 cu12torch2.5cxx11abiTRUE-cp312，仅在下游（research-incubator
