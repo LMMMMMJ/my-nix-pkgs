@@ -43,6 +43,13 @@ nix flake check
 nix flake update
 ```
 
+**Do not run `nix flake update` (or otherwise bump the `nixpkgs` input) unless
+the user explicitly asks for it.** Bumping the channel forces large rebuilds
+across the closure (toolchains, torch, the HuggingFace family, etc.) and is
+rarely what the user wants alongside a routine package version change. Touch
+`flake.lock` only on explicit request, or when a per-package update genuinely
+needs a newer nixpkgs to evaluate.
+
 ## Architecture
 
 ### Flake Structure
