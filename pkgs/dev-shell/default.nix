@@ -6,6 +6,8 @@ let
     [
       tushare
       pyexecjs
+      # PyTorch (CUDA-enabled via cudaSupport override in flake.nix)
+      torch
       # HuggingFace family packages
       hf-xet
       huggingface-hub
