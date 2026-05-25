@@ -113,3 +113,23 @@ Each package change gets its own commit. Commit messages follow these patterns:
 - **New package:** `<package>: init at <version>` (e.g., `xtquant: init at 250516.1.1`)
 - **Remove package:** `<package>: remove package`
 - **Flake lock update:** `flake.lock: update nixpkgs <old-date> -> <new-date>`
+
+## Multi-branch Update Workflow
+
+This repo maintains three long-lived branches that pin different `nixpkgs` channels:
+
+| Branch | `nixpkgs` pin | Notes |
+| --- | --- | --- |
+| `master` | `nixos-unstable` | Primary development branch |
+| `nixos-25.11` | `nixos-25.11` | Stable channel; no `torch` override |
+| `nixos-24.11` | `nixos-24.11` (+ `nixpkgs-newer` = `nixos-25.11`) | Compatibility branch with backport overlay |
+
+**Every package update must be propagated across all three branches in this order:**
+
+1. **`master` first.** Apply the update, build, run the dev-shell verification block, commit per the conventions above, then `git push`.
+2. **`nixos-25.11` next.** Switch to the branch and either cherry-pick the master commit(s) or re-apply by hand. Re-run `nix build` + dev-shell verification (the pinned `nixpkgs` differs, so hashes/dependencies may diverge). Commit and push.
+3. **`nixos-24.11` last.** Same flow; this branch is a *compatibility* branch — if upstream requires a toolchain newer than what 24.11 + `nixpkgs-newer` can supply, **skip the update on this branch** rather than forcing it. Note the skip in the push summary.
+
+CLAUDE.md changes themselves are part of this rotation: a workflow rule only takes effect on the branch where it lives, so port doc updates to all three branches too.
+
+When in doubt about whether an upgrade is safe on an older branch, prefer "skip + report" over a speculative bump.
