@@ -7,16 +7,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "temporal";
-  version = "1.30.4";
+  version = "1.31.0";
 
   src = fetchFromGitHub {
     owner = "temporalio";
     repo = "temporal";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-qC4SMy8ypeSJlqqTtMb27d869bLP1dcGilqU50Fen60=";
+    hash = "sha256-FgqJcDHY7p6k5Z7TFBQHMV0xZjfdqBPRDIQ2hsa+1LQ=";
   };
 
-  vendorHash = "sha256-YJbovD2woypOiYfn9axO8lshIg/6gO9Sa8a3DIt8QFg=";
+  vendorHash = "sha256-CRoBLiHi9EBOuTm4Ue6tpg7SGDdvG7ySGUcM+8w4HCU=";
 
   excludedPackages = [ "./build" ];
 
