@@ -34,6 +34,7 @@
           baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
+          temporal-ui-server = final.callPackage ./pkgs/temporal-family/temporal-ui-server { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] (system:
@@ -67,6 +68,7 @@
           baidupcs-go = pkgs.baidupcs-go;
           temporal-cli = pkgs.temporal-cli;
           temporal = pkgs.temporal;
+          temporal-ui-server = pkgs.temporal-ui-server;
           xtquant = pkgs.python3Packages.xtquant;
           flash-attn = pkgs.python3Packages.flash-attn;
         };
