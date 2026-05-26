@@ -32,6 +32,7 @@
           gemini-cli = final.callPackage ./pkgs/gemini-cli { };
           codex = final.callPackage ./pkgs/codex { };
           baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
+          temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
         };
       };
     } // inputs.utils.lib.eachSystem [ "aarch64-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] (system:
@@ -63,6 +64,7 @@
           codex = pkgs.codex;
           # Add baidupcs-go package
           baidupcs-go = pkgs.baidupcs-go;
+          temporal-cli = pkgs.temporal-cli;
           xtquant = pkgs.python3Packages.xtquant;
           flash-attn = pkgs.python3Packages.flash-attn;
         };
