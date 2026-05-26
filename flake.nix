@@ -25,7 +25,8 @@
               torch = python-prev.torch-bin;
             }
             # Import HuggingFace family packages
-            // import ./pkgs/huggingface-family { inherit python-final python-prev; })
+            // import ./pkgs/huggingface-family { inherit python-final python-prev; }
+            // import ./pkgs/temporal-family { inherit python-final python-prev; })
           ];
           # Add non-Python packages here
           claude-code = final.callPackage ./pkgs/claude-code { };
@@ -69,6 +70,7 @@
           temporal-cli = pkgs.temporal-cli;
           temporal = pkgs.temporal;
           temporal-ui-server = pkgs.temporal-ui-server;
+          temporalio = pkgs.python3Packages.temporalio;
           xtquant = pkgs.python3Packages.xtquant;
           flash-attn = pkgs.python3Packages.flash-attn;
         };
