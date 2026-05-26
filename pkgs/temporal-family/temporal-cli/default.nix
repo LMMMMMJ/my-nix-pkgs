@@ -26,7 +26,7 @@ buildGoModule (finalAttrs: {
   ldflags = [
     "-s"
     "-w"
-    "-X github.com/temporalio/cli/temporalcli.Version=${finalAttrs.version}"
+    "-X github.com/temporalio/cli/internal/temporalcli.Version=${finalAttrs.version}"
   ];
 
   doCheck = false;
