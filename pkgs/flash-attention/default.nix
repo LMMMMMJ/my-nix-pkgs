@@ -9,11 +9,15 @@
 }:
 
 let
-  version = "2.8.3";
+  version = "2.8.1";
   # Prebuilt CUDA wheel from upstream — flash-attn does not publish wheels to
-  # PyPI. This pin targets cp313 + torch 2.8 + cxx11abi=FALSE; revisit when
-  # nixpkgs torch or Python minor moves.
-  wheel = "flash_attn-${version}+cu12torch2.8cxx11abiFALSE-cp313-cp313-linux_x86_64.whl";
+  # PyPI. The wheel's CUDA major must match the torch it runs against, or the
+  # extension fails at import with `libcudart.so.<major>: cannot open shared
+  # object file`; the build cannot catch that, because the wheel is only
+  # unpacked and `autoPatchelfIgnoreMissingDeps` defers resolution to runtime.
+  # This flake's torch is cu130, so the pin is cu13 + cp313. 2.8.3 is newer but
+  # publishes cu13 for cp312 only.
+  wheel = "flash_attn-${version}+cu13torch2.10cxx11abiTRUE-cp313-cp313-linux_x86_64.whl";
 in
 buildPythonPackage {
   pname = "flash-attn";
@@ -22,12 +26,12 @@ buildPythonPackage {
 
   src = builtins.fetchurl {
     url = "https://github.com/Dao-AILab/flash-attention/releases/download/v${version}/${wheel}";
-    sha256 = "sha256-yFDTdB9OsZpUi/U/I4U5uSuy/yz1Bf7Qirq8hdALRcw=";
+    sha256 = "sha256-oU/qFX62Hf7lb2BaJKemFQcEUXdZEls5Qt0Ev/oF1s8=";
   };
 
   nativeBuildInputs = [ autoPatchelfHook ];
 
-  # The wheel pins torch==2.8.*; flake provides torch 2.9 — relax it.
+  # The wheel pins torch==2.10.*; flake provides 2.12.1 — relax it.
   pythonRelaxDeps = [ "torch" ];
 
   propagatedBuildInputs = [
