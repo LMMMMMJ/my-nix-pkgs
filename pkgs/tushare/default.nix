@@ -1,19 +1,17 @@
-{ lib, buildPythonPackage, fetchPypi, setuptools, pythonOlder, autoPatchelfHook
+{ lib, buildPythonPackage, fetchPypi, setuptools
 , requests, six, pandas, cachetools, protobuf, lxml, beautifulsoup4, tqdm
 , simplejson, websocket-client }:
-let
-  url =
-    "https://files.pythonhosted.org/packages/33/3e/d426a56e5feac9b0aaada1c6b0745ed03422d4a713295e0bbb44c8ea86fe/tushare-1.4.29-py3-none-any.whl";
-in buildPythonPackage rec {
+buildPythonPackage rec {
   pname = "tushare";
   version = "1.4.29";
   format = "wheel";
-  src = builtins.fetchurl {
-    inherit url;
-    sha256 = "sha256-glVK+VPqWsPYdx1CMwSTGBAxx+aNzM4DpJHHNW6bpLI=";
+  src = fetchPypi {
+    inherit pname version format;
+    dist = "py3";
+    python = "py3";
+    hash = "sha256-glVK+VPqWsPYdx1CMwSTGBAxx+aNzM4DpJHHNW6bpLI=";
   };
 
-  build-system = [ setuptools ];
   propagatedBuildInputs = [
     setuptools
     six
@@ -31,7 +29,6 @@ in buildPythonPackage rec {
   # only ships beautifulsoup4 directly, so drop the stub from the dep check.
   pythonRemoveDeps = [ "bs4" ];
   doCheck = false;
-  nativeBuildInputs = [ autoPatchelfHook ];
 
   pythonImportsCheck = [ "tushare" ];
   meta = with lib; {
