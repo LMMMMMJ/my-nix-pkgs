@@ -86,6 +86,9 @@
           in final.callPackage ./pkgs/herdr {
             rustPlatform = final.makeRustPlatform { cargo = toolchain; rustc = toolchain; };
           };
+          tailscale = final.callPackage ./pkgs/tailscale {
+            upstream = prev.tailscale;
+          };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
           temporal-ui-server = final.callPackage ./pkgs/temporal-family/temporal-ui-server { };
@@ -116,6 +119,7 @@
           baidupcs-go = pkgs.baidupcs-go;
           collie = pkgs.collie;
           herdr = pkgs.herdr;
+          tailscale = pkgs.tailscale;
           temporal-cli = pkgs.temporal-cli;
           temporal = pkgs.temporal;
           temporal-ui-server = pkgs.temporal-ui-server;

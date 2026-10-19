@@ -14,6 +14,7 @@
 - `baidupcs-go` - 百度网盘命令行工具
 - `collie` - 通过 Tailscale 在手机上访问终端 Agent，包含完整网页资源
 - `herdr` - 管理终端工作区和 Agent 会话，使用 Rust 和 Zig 从源码构建
+- `tailscale` - 私有网络客户端和 daemon，复用 nixpkgs 打包逻辑并固定发布版本
 
 ### Temporal 家族包
 
