@@ -4,6 +4,7 @@
 
 部署文档：[通过用户级 Tailscale 用手机访问 Collie](docs/collie-tailscale-setup.md)，
 包含从零安装所需的 NixOS 模块、脚本、登录配对步骤和验收方法。
+打包方式、升级步骤及兼容性检查见 [Collie 相关软件包的维护](docs/collie-packaging.md)。
 
 ## 包含的包
 
@@ -12,6 +13,10 @@
 - `tushare` - 中国股票市场数据接口
 - `pyexecjs` - 在 Python 中运行 JavaScript 代码
 - `baidupcs-go` - 百度网盘命令行工具
+- `collie` - 通过 Tailscale 在手机上访问终端 Agent，包含完整网页资源
+- `herdr` - 管理终端工作区和 Agent 会话，使用 Rust 和 Zig 从源码构建
+- `tailscale` - 私有网络客户端和 daemon，复用 nixpkgs 打包逻辑并固定发布版本
+- `collie-tailscale` - 连接当前用户的 Collie Tailscale socket，不操作系统级 daemon
 
 ### Temporal 家族包
 
@@ -265,6 +270,7 @@ temporal --version
 nix build .#tushare
 nix build .#pyexecjs
 nix build .#temporal-cli
+nix build .#collie .#herdr .#tailscale .#collie-tailscale
 
 # 构建 HuggingFace 包
 nix build .#sentence-transformers

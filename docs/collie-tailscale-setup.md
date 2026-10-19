@@ -34,7 +34,7 @@ Tailscale 把设备加入一个私有网络，称为 **tailnet**。这里每个 
 设置 `COLLIE_TRUSTED_USER`，只接受指定 Tailscale 登录身份，并使用设备配对凭据。
 Tailscale 登录身份、Unix 用户名、手机配对名称是三个不同的值。
 
-参考：[Collie 安全说明](https://github.com/AltanS/collie/blob/c539913e924bfed179142d0ad517802b80ff5010/docs/security.md)、
+参考：[Collie 安全说明](https://github.com/AltanS/collie/blob/9cc40c8a3e75e9547e711d52d49bf5c1dd7d2aba/docs/security.md)、
 [Tailscale Serve](https://tailscale.com/docs/features/tailscale-serve)。
 
 ## 2. 准备信息及版本
@@ -67,14 +67,17 @@ Nix 需要启用 `nix-command` 和 `flakes`。如果现有系统还未启用，�
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
 
-示例固定使用 Herdr `v0.9.5`，以及 Collie 的提交
-`c539913e924bfed179142d0ad517802b80ff5010`，后者的 Nix 发布清单安装 `1.22.5`。
-固定提交的原因是：Collie `v1.22.5` 标签内的 `packaging/nix/sources.json` 仍引用
-`1.22.4`，标签名与 Nix 包版本不总是一致。升级时应同时检查发布清单和安装后的
-`collie version`，不能只看输入标签。
+本仓库维护 Collie `1.22.6`、Herdr `0.9.5` 和 Tailscale `1.104.1`，均为
+2026-10-19 核查时的最新稳定版。后文通过 `my-nix-pkgs.packages` 取得同一套包，
+系统 flake 的锁文件记录具体提交；无需再引入 Collie、Herdr 的官方 flake。
 
-版本依据：[1.22.5 的 Nix 发布清单](https://github.com/AltanS/collie/blob/c539913e924bfed179142d0ad517802b80ff5010/packaging/nix/sources.json)、
-[Herdr Nix 安装说明](https://herdr.dev/docs/install/#install-with-nix)。
+Collie 安装官方发布归档，并核对发布清单中的哈希；Herdr 使用固定源码提交和依赖
+哈希构建；Tailscale 复用 nixpkgs 的打包逻辑，由本仓库固定版本和源码哈希。维护方式
+和兼容性检查见 [Collie 相关软件包的维护](collie-packaging.md)。
+
+版本依据：[Collie 发布说明](https://github.com/AltanS/collie/releases/tag/v1.22.6)、
+[Herdr 发布说明](https://github.com/herdrdev/herdr/releases/tag/v0.9.5)、
+[Tailscale 发布说明](https://github.com/tailscale/tailscale/releases/tag/v1.104.1)。
 
 ## 3. 安装完整的 NixOS 模块
 
@@ -105,7 +108,7 @@ sudo cp ~/projects/my-nix-pkgs/docs/examples/collie-mobile.nix /etc/nixos/collie
 
 ### 3.2 引入软件包和模块
 
-已有系统 flake 时，合并下面的 `collie`、`herdr` 输入、模块 import 和
+已有系统 flake 时，合并下面的 `my-nix-pkgs` 输入、模块 import 和
 `services.collieMobile` 配置；保留原有 `nixpkgs` 输入、硬件配置及其他模块。
 
 下面是完整的最小 flake 示例，前提是相邻的 `configuration.nix` 已经能正确配置
@@ -115,11 +118,10 @@ sudo cp ~/projects/my-nix-pkgs/docs/examples/collie-mobile.nix /etc/nixos/collie
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    collie.url = "github:AltanS/collie/c539913e924bfed179142d0ad517802b80ff5010";
-    herdr.url = "github:herdrdev/herdr/v0.9.5";
+    my-nix-pkgs.url = "github:LMMMMMJ/my-nix-pkgs";
   };
 
-  outputs = { nixpkgs, collie, herdr, ... }: {
+  outputs = { nixpkgs, my-nix-pkgs, ... }: {
     nixosConfigurations.devbox = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux"; # ARM 主机改为 aarch64-linux
       modules = [
@@ -128,8 +130,9 @@ sudo cp ~/projects/my-nix-pkgs/docs/examples/collie-mobile.nix /etc/nixos/collie
         ({ pkgs, ... }: {
           services.collieMobile = {
             enable = true;
-            colliePackage = collie.packages.${pkgs.stdenv.hostPlatform.system}.default;
-            herdrPackage = herdr.packages.${pkgs.stdenv.hostPlatform.system}.default;
+            colliePackage = my-nix-pkgs.packages.${pkgs.stdenv.hostPlatform.system}.collie;
+            herdrPackage = my-nix-pkgs.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
+            tailscalePackage = my-nix-pkgs.packages.${pkgs.stdenv.hostPlatform.system}.tailscale;
             users.alice = {
               port = 8787;
               tailnetLogin = "alice@example.com";
@@ -164,7 +167,7 @@ sudo nixos-rebuild switch --flake .#devbox
 ```
 
 提交系统配置时一并保存 `flake.lock`。不需要为了安装 Collie 更新整个 `nixpkgs`。
-Herdr 的上游 Nix 包从源码构建，首次构建可能需要下载编译工具并等待编译结束。
+Herdr 从源码构建，首次构建可能需要下载编译工具并等待编译结束。
 
 ## 4. 模块生成了什么
 
@@ -439,11 +442,11 @@ Web Push 需要 iOS 16.4 或更新版本，并从主屏幕图标打开应用。�
 
 ### 更新
 
-在系统 flake 中修改所需工具的固定版本或提交，然后仅更新相关输入。例如修改
-`collie.url` 后：
+软件包版本和哈希由 `my-nix-pkgs` 管理。包更新合并后，在系统 flake 中仅更新
+这一输入：
 
 ```bash
-nix flake update collie
+nix flake update my-nix-pkgs
 sudo nixos-rebuild build --flake .#devbox
 sudo nixos-rebuild switch --flake .#devbox
 ```
@@ -486,4 +489,4 @@ collie stop
 | 改名或换 tailnet 后，旧主屏幕图标失效 | 用 `collie url` 获取新地址，重新添加主屏幕入口；新浏览器来源可能需要重新配对 |
 
 进一步排查可查看
-[Collie 故障排查文档](https://github.com/AltanS/collie/blob/c539913e924bfed179142d0ad517802b80ff5010/docs/troubleshooting.md)。
+[Collie 故障排查文档](https://github.com/AltanS/collie/blob/9cc40c8a3e75e9547e711d52d49bf5c1dd7d2aba/docs/troubleshooting.md)。
