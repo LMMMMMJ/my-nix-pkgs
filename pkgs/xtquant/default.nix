@@ -1,17 +1,15 @@
-{ lib, buildPythonPackage, setuptools, requests, pandas, numpy, tqdm }:
-let
-  url =
-    "https://files.pythonhosted.org/packages/f4/23/3c8aa2d1130aa735285fb7e18a44d67ab71ba1162e545bd488b20457d57b/xtquant-250516.1.1-py3-none-any.whl";
-in buildPythonPackage rec {
+{ lib, buildPythonPackage, fetchPypi, requests, pandas, numpy, tqdm }:
+buildPythonPackage rec {
   pname = "xtquant";
-  version = "250516.1.1";
+  version = "250807.1.2";
   format = "wheel";
-  src = builtins.fetchurl {
-    inherit url;
-    sha256 = "sha256:f8461b0a295fa9b13ead33acca8675f7961fe1b4488a319b5549853142a89014";
+  src = fetchPypi {
+    inherit pname version format;
+    dist = "py3";
+    python = "py3";
+    hash = "sha256-kfGf+akpccWr5k+9B35SEuBBjwggqjQnrvNEQjD3KSE=";
   };
 
-  build-system = [ setuptools ];
   propagatedBuildInputs = [
     requests
     pandas
@@ -22,7 +20,7 @@ in buildPythonPackage rec {
 
   pythonImportsCheck = [ "xtquant" ];
   meta = with lib; {
-    description = "XtQuant - 迅投QMT量化交易Python SDK";
+    description = "Python SDK for the XtQuant QMT trading platform";
     homepage = "https://pypi.org/project/xtquant";
     license = licenses.unfree;
   };
