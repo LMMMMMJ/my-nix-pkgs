@@ -58,6 +58,9 @@
                   "-Wignore:'isolated_filesystem' is deprecated:DeprecationWarning"
                 ];
               });
+              triton-bin = python-final.callPackage ./pkgs/torch/triton-bin.nix {
+                upstream = python-prev.triton-bin;
+              };
               # 使用 PyTorch 二进制轮子。2.13 的 Linux 轮子为 cu130，使用对应的 CUDA 13.0。
               # 新版 nixpkgs 会同时为 torch-bin 选择对应的 cuda-bindings。
               torch = python-prev.torch-bin.override {
