@@ -2,6 +2,9 @@
 
 这是一个自定义的 Nix 包集合，提供了一些额外的 Python 包，特别是最新版本的 HuggingFace 生态系统包。
 
+部署文档：[通过用户级 Tailscale 用手机访问 Collie](docs/collie-tailscale-setup.md)，
+包含从零安装所需的 NixOS 模块、脚本、登录配对步骤和验收方法。
+
 ## 包含的包
 
 ### 基础包
