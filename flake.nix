@@ -58,24 +58,11 @@
                   "-Wignore:'isolated_filesystem' is deprecated:DeprecationWarning"
                 ];
               });
-              # Use upstream PyTorch binary wheel (torch-bin) so we get a CUDA-enabled
-              # build without recompiling torch from source. The 2.12.1 wheel is a
-              # cu130 build and refuses to evaluate against the default cudaPackages
-              # (12.9), so both CUDA arguments point at the matching 13.0. Drop
-              # the overrides once the default catches up.
-              #
-              # The wheel's metadata declares `setuptools<82` and nixpkgs ships 83,
-              # which fails `pythonRuntimeDepsCheckHook`. Skipped rather than
-              # pinning an older setuptools, which would rebuild the Python set.
-              # Re-check `import torch` after bumping either one.
-              torch = (python-prev.torch-bin.override {
+              # 使用 PyTorch 二进制轮子。2.13 的 Linux 轮子为 cu130，使用对应的 CUDA 13.0。
+              # 新版 nixpkgs 会同时为 torch-bin 选择对应的 cuda-bindings。
+              torch = python-prev.torch-bin.override {
                 cudaPackages = final.cudaPackages_13_0;
-                cuda-bindings = python-prev.cuda-bindings.override {
-                  cudaPackages = final.cudaPackages_13_0;
-                };
-              }).overridePythonAttrs (_: {
-                dontCheckRuntimeDeps = true;
-              });
+              };
             }
             # Import HuggingFace family packages
             // import ./pkgs/huggingface-family { inherit python-final python-prev; }
