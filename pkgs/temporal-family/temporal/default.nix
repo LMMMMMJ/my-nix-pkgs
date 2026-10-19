@@ -1,24 +1,29 @@
 {
   lib,
   fetchFromGitHub,
-  buildGoModule,
+  buildGo127Module,
   versionCheckHook,
 }:
 
-buildGoModule (finalAttrs: {
+buildGo127Module (finalAttrs: {
   pname = "temporal";
-  version = "1.31.0";
+  version = "1.32.1";
 
   src = fetchFromGitHub {
     owner = "temporalio";
     repo = "temporal";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-FgqJcDHY7p6k5Z7TFBQHMV0xZjfdqBPRDIQ2hsa+1LQ=";
+    hash = "sha256-5TLxrCk1YH2LnuB0Je/jzW1xrGjA8EhcL4Dr4ertlFs=";
   };
 
-  vendorHash = "sha256-CRoBLiHi9EBOuTm4Ue6tpg7SGDdvG7ySGUcM+8w4HCU=";
+  vendorHash = "sha256-py4OvFtc8UtVx9ei74/CrYtRDahW7Q1LK+DK8Wd1de8=";
 
-  excludedPackages = [ "./build" ];
+  subPackages = [
+    "cmd/server"
+    "cmd/tools/cassandra"
+    "cmd/tools/sql"
+    "cmd/tools/tdbg"
+  ];
 
   env.CGO_ENABLED = 0;
 
@@ -30,18 +35,12 @@ buildGoModule (finalAttrs: {
 
   doCheck = false;
 
-  installPhase = ''
-    runHook preInstall
-
+  postInstall = ''
     mkdir -p $out/share
-    cp -r ./schema $out/share/
-
-    install -Dm755 "$GOPATH/bin/server" -T $out/bin/temporal-server
-    install -Dm755 "$GOPATH/bin/cassandra" -T $out/bin/temporal-cassandra-tool
-    install -Dm755 "$GOPATH/bin/sql" -T $out/bin/temporal-sql-tool
-    install -Dm755 "$GOPATH/bin/tdbg" -T $out/bin/tdbg
-
-    runHook postInstall
+    cp -r schema $out/share/
+    mv $out/bin/server $out/bin/temporal-server
+    mv $out/bin/cassandra $out/bin/temporal-cassandra-tool
+    mv $out/bin/sql $out/bin/temporal-sql-tool
   '';
 
   nativeInstallCheckInputs = [ versionCheckHook ];
