@@ -61,7 +61,11 @@
               # 使用 PyTorch 二进制轮子。2.13 的 Linux 轮子为 cu130，使用对应的 CUDA 13.0。
               # 新版 nixpkgs 会同时为 torch-bin 选择对应的 cuda-bindings。
               torch = python-prev.torch-bin.override {
-                cudaPackages = final.cudaPackages_13_0;
+                cudaPackages = final.cudaPackages_13_0 // {
+                  libnvshmem = final.callPackage ./pkgs/torch/libnvshmem-runtime.nix {
+                    upstream = final.cudaPackages_13_0.libnvshmem;
+                  };
+                };
               };
             }
             # Import HuggingFace family packages
