@@ -8,5 +8,7 @@
 # same shape as huggingface-family/default.nix.
 
 rec {
-  temporalio = python-final.callPackage ./temporalio { };
+  temporalio = python-final.callPackage ./temporalio {
+    upstream = python-prev.temporalio;
+  };
 }
