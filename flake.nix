@@ -58,14 +58,6 @@
                   "-Wignore:'isolated_filesystem' is deprecated:DeprecationWarning"
                 ];
               });
-              # numpy-groupies 0.11.3's `test_scalar_input` uses the
-              # `pytest.raises(exc, func, ...)` form that pytest 9.1 removed.
-              # Only that test is affected. Drop when nixpkgs picks up a fixed
-              # release.
-              numpy-groupies = python-prev.numpy-groupies.overridePythonAttrs (old: {
-                disabledTests = (old.disabledTests or [ ]) ++ [ "test_scalar_input" ];
-              });
-
               # Use upstream PyTorch binary wheel (torch-bin) so we get a CUDA-enabled
               # build without recompiling torch from source. The 2.12.1 wheel is a
               # cu130 build and refuses to evaluate against the default cudaPackages
