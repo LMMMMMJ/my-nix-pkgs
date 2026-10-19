@@ -18,6 +18,6 @@ rec {
   };
   
   sentence-transformers = python-final.callPackage ./sentence-transformers { 
-    transformers = transformers;
+    upstream = python-prev.sentence-transformers;
   };
 }
