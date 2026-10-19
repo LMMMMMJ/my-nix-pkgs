@@ -1,23 +1,23 @@
 {
   lib,
   fetchFromGitHub,
-  buildGoModule,
+  buildGo127Module,
   installShellFiles,
   stdenv,
 }:
 
-buildGoModule (finalAttrs: {
+buildGo127Module (finalAttrs: {
   pname = "temporal-cli";
-  version = "1.7.0";
+  version = "1.9.1";
 
   src = fetchFromGitHub {
     owner = "temporalio";
     repo = "cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-P/wfvKRAvqRgUJabVE9RvT4o3fNZ52JX48hXm3C3orI=";
+    hash = "sha256-jlcJYtX+2MLuAm8lcnzSb+YbxNKoFa+gYO0VYXgafUk=";
   };
 
-  vendorHash = "sha256-dD21m6tlwkZkclYOcYUNlsPXxYmLggjrFTv9XctCIt0=";
+  vendorHash = "sha256-26KejpzCVRKVvoCZazNBi/vUyXlCgYCmHxy2AiA08vA=";
 
   nativeBuildInputs = [ installShellFiles ];
 

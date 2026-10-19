@@ -8,18 +8,26 @@
 ## 包含的包
 
 ### 基础包
+
 - `tushare` - 中国股票市场数据接口
-- `pyexecjs` - 在Python中运行JavaScript代码
-- `claude-code` - Anthropic的智能编程助手，直接在终端中运行
-- `gemini-cli` - Google Gemini AI助手的命令行工具，直接在终端中与Gemini交互
-- `codex` - OpenAI的AI编程助手，轻量级编程代理，直接在终端中运行
+- `pyexecjs` - 在 Python 中运行 JavaScript 代码
+- `baidupcs-go` - 百度网盘命令行工具
+
+### Temporal 家族包
+
+- `temporal-cli` - Temporal 命令行工具，命令为 `temporal`
+- `temporal` - Temporal 服务端，命令为 `temporal-server`
+- `temporal-ui-server` - Temporal Web 界面服务
+- `temporalio` - Temporal Python SDK
 
 ### HuggingFace 家族包
+
 - `hf-xet` - Xet 客户端技术，用于 huggingface-hub
 - `huggingface-hub` - HuggingFace Hub 客户端库
 - `tokenizers` - 快速、现代的分词器库
 - `transformers` - 最新的 Transformer 模型库
 - `sentence-transformers` - 句子嵌入和语义搜索库
+- `flash-attn` - FlashAttention 2 CUDA 实现，针对当前 Torch 从源码编译
 
 ## 在其他项目中使用
 
@@ -38,7 +46,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     my-nix-pkgs = {
-      url = "path:/home/jacob/project/my-nix-pkgs";  # 本地路径
+      url = "path:/absolute/path/to/my-nix-pkgs";  # 本地路径
       # 或者远程仓库：
       # url = "github:LMMMMMJ/my-nix-pkgs";
     };
@@ -65,9 +73,7 @@
             python3Packages.huggingface-hub
             python3Packages.tokenizers
             python3Packages.hf-xet
-            claude-code
-            gemini-cli
-            codex
+            temporal-cli
             python3
           ];
         };
@@ -78,12 +84,6 @@
           tushare-direct = my-nix-pkgs.packages.${system}.tushare;
           pyexecjs-via-overlay = pkgs.python3Packages.pyexecjs;
           pyexecjs-direct = my-nix-pkgs.packages.${system}.pyexecjs;
-          claude-code-via-overlay = pkgs.claude-code;
-          claude-code-direct = my-nix-pkgs.packages.${system}.claude-code;
-          gemini-cli-via-overlay = pkgs.gemini-cli;
-          gemini-cli-direct = my-nix-pkgs.packages.${system}.gemini-cli;
-          codex-via-overlay = pkgs.codex;
-          codex-direct = my-nix-pkgs.packages.${system}.codex;
           # HuggingFace 包
           sentence-transformers = pkgs.python3Packages.sentence-transformers;
           transformers = pkgs.python3Packages.transformers;
@@ -121,9 +121,7 @@
       devShells.default = pkgs.mkShell {
         packages = [
           # 直接引用我们库中的包
-          my-nix-pkgs.packages.${system}.claude-code
-          my-nix-pkgs.packages.${system}.gemini-cli
-          my-nix-pkgs.packages.${system}.codex
+          my-nix-pkgs.packages.${system}.temporal-cli
           # Python 包
           (pkgs.python3.withPackages (ps: [
             my-nix-pkgs.packages.${system}.tushare
@@ -139,11 +137,7 @@
         
         shellHook = ''
           echo "🚀 开发环境已就绪！"
-          echo "可用的 AI 工具："
-          echo "  - claude-code: $(claude --version 2>/dev/null || echo '未安装')"
-          echo "  - gemini-cli: $(gemini --version 2>/dev/null || echo '未安装')"
-          echo "  - codex: $(codex --version 2>/dev/null || echo '未安装')"
-          echo ""
+          temporal --version
           echo "可用的 Python 库："
           python3 -c "
           try:
@@ -152,7 +146,7 @@
           except: print('  ✗ tushare: 未安装')
           
           try:
-              import PyExecJS
+              import execjs
               print('  ✓ PyExecJS: 已安装')
           except: print('  ✗ PyExecJS: 未安装')
           
@@ -171,13 +165,13 @@
       
       # 也可以创建专门的包输出
       packages = {
-        # 创建一个包含所有 AI 工具的包
-        ai-tools = pkgs.buildEnv {
-          name = "ai-tools";
+        # 创建包含 Temporal 命令行工具和服务端的环境
+        temporal-tools = pkgs.buildEnv {
+          name = "temporal-tools";
           paths = [
-            my-nix-pkgs.packages.${system}.claude-code
-            my-nix-pkgs.packages.${system}.gemini-cli
-            my-nix-pkgs.packages.${system}.codex
+            my-nix-pkgs.packages.${system}.temporal-cli
+            my-nix-pkgs.packages.${system}.temporal
+            my-nix-pkgs.packages.${system}.temporal-ui-server
           ];
         };
         
@@ -220,8 +214,7 @@ cat > flake.nix << 'EOF'
     let system = "x86_64-linux"; in {
       devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
         packages = [
-          my-nix-pkgs.packages.${system}.claude-code
-          my-nix-pkgs.packages.${system}.codex
+          my-nix-pkgs.packages.${system}.temporal-cli
         ];
       };
     };
@@ -231,9 +224,8 @@ EOF
 # 3. 进入开发环境
 nix develop
 
-# 4. 开始使用 AI 工具
-claude "帮我写一个Python函数"
-codex "解释这段代码"
+# 4. 检查 Temporal CLI
+temporal --version
 ```
 
 ### 方法三：在 NixOS 系统配置中使用
@@ -244,7 +236,7 @@ codex "解释这段代码"
   
   outputs = { nixpkgs, my-nix-pkgs, ... }: {
     nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
-      modules = [{
+      modules = [({ pkgs, ... }: {
         nixpkgs.overlays = [ my-nix-pkgs.overlays.default ];
         
         environment.systemPackages = with pkgs; [
@@ -256,11 +248,9 @@ codex "解释这段代码"
           python3Packages.huggingface-hub
           python3Packages.tokenizers
           python3Packages.hf-xet
-          claude-code
-          gemini-cli
-          codex
+          temporal-cli
         ];
-      }];
+      })];
     };
   };
 }
@@ -274,9 +264,7 @@ codex "解释这段代码"
 # 构建特定包
 nix build .#tushare
 nix build .#pyexecjs
-nix build .#claude-code
-nix build .#gemini-cli
-nix build .#codex
+nix build .#temporal-cli
 
 # 构建 HuggingFace 包
 nix build .#sentence-transformers
@@ -297,126 +285,8 @@ python3 -c "import execjs; print('PyExecJS test: 1 + 2 =', execjs.eval('1 + 2'))
 python3 -c "import sentence_transformers; print('sentence-transformers OK')"
 python3 -c "import transformers; print('transformers OK')"
 python3 -c "import huggingface_hub; print('huggingface-hub OK')"
-claude --version
-gemini --version
-codex --version
+temporal --version
 ```
-
-## Gemini CLI 使用说明
-
-### 快速开始
-
-Gemini CLI 是 Google 官方的 Gemini AI 助手命令行工具，让你可以直接在终端中与 Gemini 模型交互。
-
-#### 1. 基本使用
-
-```bash
-# 直接与 Gemini 对话
-gemini "你好，请介绍一下自己"
-
-# 从文件读取内容并提问
-gemini "请解释这段代码" < script.py
-
-# 使用管道输入
-echo "Hello World" | gemini "请翻译成中文"
-```
-
-#### 2. 常用命令
-
-```bash
-# 查看版本信息
-gemini --version
-
-# 查看帮助信息
-gemini --help
-
-# 设置 API 密钥（如果需要）
-gemini config set api-key YOUR_API_KEY
-
-# 查看当前配置
-gemini config list
-```
-
-#### 3. 高级功能
-
-- **多轮对话**: 支持上下文感知的连续对话
-- **文件处理**: 可以处理多种文件格式的输入
-- **代码分析**: 专门优化的代码理解和生成功能
-- **多语言支持**: 支持多种编程语言和自然语言
-
-更多详细使用方法请参考：https://github.com/google-gemini/gemini-cli
-
-## Codex 使用说明
-
-### 快速开始
-
-Codex 是 OpenAI 的AI编程助手，轻量级编程代理，可以直接在终端中运行，提供智能代码生成、代码解释和编程协助功能。
-
-#### 1. 基本使用
-
-```bash
-# 直接与 Codex 对话
-codex "如何在Python中读取CSV文件？"
-
-# 代码生成
-codex "写一个快速排序算法的Python实现"
-
-# 交互模式
-codex
-
-# 执行模式（非交互）
-codex exec "解释这段代码的功能"
-```
-
-#### 2. 常用命令
-
-```bash
-# 查看版本信息
-codex --version
-
-# 查看帮助信息
-codex --help
-
-# 登录管理
-codex login
-
-# 登出
-codex logout
-
-# 应用最新的diff到本地工作树
-codex apply
-
-# 恢复之前的会话
-codex resume
-```
-
-#### 3. 高级功能
-
-- **代码生成**: 根据自然语言描述生成代码
-- **代码解释**: 分析和解释现有代码
-- **交互式编程**: 支持多轮对话的编程协助
-- **Git集成**: 可以应用生成的代码diff到工作树
-- **多种沙盒模式**: 安全的代码执行环境
-- **模型选择**: 支持不同的AI模型
-
-#### 4. 配置选项
-
-```bash
-# 使用特定模型
-codex -m o3 "你的问题"
-
-# 启用网络搜索
-codex --search "查询最新的API文档"
-
-# 设置沙盒权限
-codex -s workspace-write "修改这个文件"
-
-# 全自动模式（谨慎使用）
-codex --full-auto "自动化任务"
-```
-
-更多详细使用方法请参考：
-- [OpenAI Codex CLI官方文档](https://github.com/openai/codex)
 
 ## 添加新包
 
@@ -472,7 +342,7 @@ direnv allow
 
 ## 维护
 
-- 使用 `nix flake update` 更新依赖
+- 包版本更新保留现有 `flake.lock`；只有明确需要更新 nixpkgs 时才执行 `nix flake update`
 - 使用 `nix flake check` 验证配置
 - 使用 `nix build .#package-name` 测试特定包
 - 定期检查上游包更新

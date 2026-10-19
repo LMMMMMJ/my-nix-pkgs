@@ -15,6 +15,8 @@ buildGoModule rec {
     hash = "sha256-o0Oh6zLJT25+smEgWy7E8fTigJ2FLpBXoaZSYCRFvic=";
   };
 
+  subPackages = [ "." ];
+
   vendorHash = "sha256-3kvB5QxtWuElhDIFFr3Awf5myf6l2Hx0M2k53ltQYeQ=";
   doCheck = false;
 
@@ -26,11 +28,6 @@ buildGoModule rec {
     versionCheckHook
   ];
   doInstallCheck = true;
-  versionCheckProgram = "${placeholder "out"}/bin/${meta.mainProgram}";
-
-  postInstall = ''
-    rm -f $out/bin/AndroidNDKBuild
-  '';
 
   postVersionCheck = ''
     rm -f $out/bin/pcs_config.json

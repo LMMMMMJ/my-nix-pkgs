@@ -14,11 +14,10 @@ rec {
   };
   
   transformers = python-final.callPackage ./transformers { 
-    huggingface-hub = huggingface-hub;
-    tokenizers = tokenizers;
+    upstream = python-prev.transformers;
   };
   
   sentence-transformers = python-final.callPackage ./sentence-transformers { 
-    transformers = transformers;
+    upstream = python-prev.sentence-transformers;
   };
 }

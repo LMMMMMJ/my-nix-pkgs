@@ -1,84 +1,12 @@
-{
-  lib,
-  buildPythonPackage,
-  fetchFromGitHub,
-  rustPlatform,
-  buildPackages,
+{ upstream, rustPlatform }:
 
-  # build-system
-  maturin,
-
-  # dependencies
-  nexusrpc,
-  protobuf,
-  types-protobuf,
-  typing-extensions,
-
-  # nativeBuildInputs
-  cargo,
-  rustc,
-}:
-
-buildPythonPackage rec {
-  pname = "temporalio";
-  version = "1.27.2";
-  pyproject = true;
-
-  src = fetchFromGitHub {
-    owner = "temporalio";
-    repo = "sdk-python";
-    tag = version;
-    fetchSubmodules = true;
-    hash = "sha256-AwWcZJlYysGfNuhM2jgCWoT1MblNt6oof4/uMOsdCMk=";
-  };
-
-  cargoDeps = rustPlatform.fetchCargoVendor {
-    inherit
-      pname
-      version
-      src
-      cargoRoot
-      ;
-    hash = "sha256-aWceWxm53DbFv9O7jboPv0oSnRbVx6tObSTlD28fIHc=";
-  };
-
-  cargoRoot = "temporalio/bridge";
-
-  build-system = [
-    maturin
-  ];
-
-  env.PROTOC = "${lib.getExe buildPackages.protobuf}";
-
-  dependencies = [
-    nexusrpc
-    protobuf
-    types-protobuf
-    typing-extensions
-  ];
-
+# 当前 nixpkgs 已提供 1.34.0；标准 Maturin hook 会带入 Cargo、rustc 和 maturin。
+upstream.overridePythonAttrs (_: {
+  build-system = [ ];
   nativeBuildInputs = [
-    cargo
     rustPlatform.cargoSetupHook
     rustPlatform.maturinBuildHook
-    rustc
   ];
-
-  pythonRelaxDeps = [
-    "protobuf"
-  ];
-
-  pythonImportsCheck = [
-    "temporalio"
-    "temporalio.bridge.temporal_sdk_bridge"
-    "temporalio.client"
-    "temporalio.worker"
-  ];
-
-  meta = {
-    description = "Temporal Python SDK";
-    homepage = "https://temporal.io/";
-    changelog = "https://github.com/temporalio/sdk-python/releases/tag/${version}";
-    license = lib.licenses.mit;
-  };
-}
+  # 新版 SDK 已支持当前的 Protobuf 7，无需放宽版本限制。
+  pythonRelaxDeps = [ ];
+})

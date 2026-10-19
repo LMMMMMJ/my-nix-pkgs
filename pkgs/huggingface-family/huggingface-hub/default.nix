@@ -7,14 +7,13 @@
   setuptools,
 
   # dependencies
+  click,
   filelock,
   fsspec,
   httpx,
   packaging,
   pyyaml,
-  shellingham,
   tqdm,
-  typer,
   typing-extensions,
 
   # optional-dependencies
@@ -37,30 +36,27 @@
 
 buildPythonPackage rec {
   pname = "huggingface-hub";
-  version = "1.16.1";
+  version = "1.33.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "huggingface_hub";
     tag = "v${version}";
-    hash = "sha256-FSfGkWytiMeI540gNmrNwWhQYINq24cR6TWPkZBlsYM=";
+    hash = "sha256-fs50qE6UUDDE5vi/ahGpZnMo1F7T1a76RJfYVcltS9o=";
   };
 
   build-system = [ setuptools ];
 
-  pythonRelaxDeps = [ "typer" ];
-
   dependencies = [
+    click
     filelock
     fsspec
     hf-xet
     httpx
     packaging
     pyyaml
-    shellingham
     tqdm
-    typer
     typing-extensions
   ];
 

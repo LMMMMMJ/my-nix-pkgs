@@ -1,9 +1,9 @@
-{ lib, buildPythonPackage, fetchPypi, setuptools, pythonOlder, six }:
+{ lib, buildPythonPackage, fetchPypi, setuptools, six }:
 
 buildPythonPackage rec {
   pname = "PyExecJS";
   version = "1.5.1";
-  format = "setuptools";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
@@ -11,7 +11,7 @@ buildPythonPackage rec {
   };
 
   build-system = [ setuptools ];
-  
+
   propagatedBuildInputs = [ six ];
 
   # PyExecJS doesn't have proper tests in the tarball
