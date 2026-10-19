@@ -1,4 +1,4 @@
-{ mkShell, python3, nodejs, baidupcs-go, collie, herdr, tailscale,
+{ mkShell, python3, nodejs, baidupcs-go, collie, herdr, tailscale, collie-tailscale,
   temporal-cli, temporal, temporal-ui-server }:
 
 let
@@ -33,6 +33,7 @@ in mkShell rec {
     collie
     herdr
     tailscale
+    collie-tailscale
     temporal-cli temporal temporal-ui-server
   ];
 
@@ -40,6 +41,7 @@ in mkShell rec {
     export PS1="$(echo -e '\u${pythonIcon}') {\[$(tput sgr0)\]\[\033[38;5;228m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]} (${name}) \\$ \[$(tput sgr0)\]"
     echo "Welcome to ${name} development environment!"
     echo "Available packages: tushare, pyexecjs, baidupcs-go"
+    echo "Collie tools: collie, herdr, tailscale, collie-tailscale"
     echo "HuggingFace packages: hf-xet, huggingface-hub, tokenizers, transformers, sentence-transformers"
     echo "Temporal packages: temporal-cli (temporal), temporal-server, temporal-ui-server, temporalio (python)"
     echo "BaiduPCS-Go version: $(BaiduPCS-Go --version | head -1)"

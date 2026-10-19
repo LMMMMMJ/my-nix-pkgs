@@ -89,6 +89,7 @@
           tailscale = final.callPackage ./pkgs/tailscale {
             upstream = prev.tailscale;
           };
+          collie-tailscale = final.callPackage ./pkgs/collie-tailscale { };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
           temporal-ui-server = final.callPackage ./pkgs/temporal-family/temporal-ui-server { };
@@ -120,6 +121,7 @@
           collie = pkgs.collie;
           herdr = pkgs.herdr;
           tailscale = pkgs.tailscale;
+          collie-tailscale = pkgs.collie-tailscale;
           temporal-cli = pkgs.temporal-cli;
           temporal = pkgs.temporal;
           temporal-ui-server = pkgs.temporal-ui-server;
