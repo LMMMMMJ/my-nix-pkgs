@@ -5,17 +5,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Repository Overview
 
 This is a custom Nix flake providing packages not available or outdated in nixpkgs, including:
-- AI CLI tools: `claude-code`, `gemini-cli`, `codex`
+- Command-line tools and services: `baidupcs-go`, `temporal-cli`, `temporal`, `temporal-ui-server`
 - Python packages: `tushare`, `pyexecjs`, `xtquant`, `regex`, and the HuggingFace family (`transformers`, `sentence-transformers`, `huggingface-hub`, `tokenizers`, `hf-xet`)
 
 ## Common Commands
 
 ```bash
 # Build ALL packages at once (always use this instead of building one by one)
-nix build .#claude-code .#gemini-cli .#codex .#tushare .#pyexecjs .#xtquant .#hf-xet .#huggingface-hub .#tokenizers .#transformers .#sentence-transformers
+nix build .#tushare .#pyexecjs .#xtquant .#hf-xet .#huggingface-hub .#tokenizers .#transformers .#sentence-transformers .#pydantic .#pydantic-core .#baidupcs-go .#temporal-cli .#temporal .#temporal-ui-server .#temporalio .#flash-attn
 
 # Build a specific package
-nix build .#claude-code
+nix build .#temporal-cli
 
 # Enter development shell (has all packages available)
 nix develop
@@ -24,9 +24,10 @@ nix develop
 # checks the package builds; this confirms CLIs launch and Python modules import
 # at the expected versions.
 nix develop --command bash -c '
-  claude --version
-  gemini --version
-  codex --version
+  BaiduPCS-Go --version
+  temporal --version
+  temporal-server --version
+  temporal-ui-server --version
   python3 -c "
 import importlib, importlib.metadata as md
 for pkg in [\"tushare\",\"execjs\",\"hf_xet\",\"huggingface_hub\",\"tokenizers\",\"transformers\",\"sentence_transformers\"]:
@@ -62,8 +63,8 @@ The flake provides two main outputs:
 
 ```
 pkgs/
-├── claude-code/          # npm package using buildNpmPackage
-├── gemini-cli/           # npm package
+├── baidupcs-go/          # 命令行工具
+├── temporal-family/      # Temporal CLI、服务端、界面及 Python SDK
 ├── tushare/              # Python wheel package
 ├── pyexecjs/             # Python package
 ├── huggingface-family/   # Python packages with shared dependencies
@@ -101,22 +102,11 @@ pkgs/
 
 The `pkgs/huggingface-family/default.nix` demonstrates handling packages with interdependencies. It takes `python-final` and `python-prev` parameters and returns a `rec` attribute set to allow internal references.
 
-### External Flake Integration
-
-`codex` is imported from an external flake (`codex-nix`) rather than defined locally, showing how to integrate third-party flakes.
-
-### Updating npm Packages (e.g., claude-code)
-
-npm packages require updating both the version/hash and regenerating `package-lock.json`:
-1. Update `version` and `src.hash` in `default.nix`
-2. Run `npm install` in the package directory to regenerate `package-lock.json`
-3. Update `npmDepsHash` (build will fail with correct hash if wrong)
-
 ## Commit Conventions
 
 Each package change gets its own commit. Commit messages follow these patterns:
 
-- **Version update:** `<package>: <old-version> -> <new-version>` (e.g., `claude-code: 2.1.77 -> 2.1.85`)
+- **Version update:** `<package>: <old-version> -> <new-version>` (e.g., `temporal-cli: 1.7.0 -> 1.9.1`)
 - **New package:** `<package>: init at <version>` (e.g., `xtquant: init at 250516.1.1`)
 - **Remove package:** `<package>: remove package`
 - **Flake lock update:** `flake.lock: update nixpkgs <old-date> -> <new-date>`

@@ -70,9 +70,6 @@
             // import ./pkgs/temporal-family { inherit python-final python-prev; })
           ];
           # Add non-Python packages here
-          claude-code = final.callPackage ./pkgs/claude-code { };
-          gemini-cli = final.callPackage ./pkgs/gemini-cli { };
-          codex = final.callPackage ./pkgs/codex { };
           baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
@@ -100,12 +97,6 @@
           sentence-transformers = pkgs.python3Packages.sentence-transformers;
           pydantic = pkgs.python3Packages.pydantic;
           pydantic-core = pkgs.python3Packages.pydantic-core;
-          # Add claude-code package
-          claude-code = pkgs.claude-code;
-          # Add gemini-cli package
-          gemini-cli = pkgs.gemini-cli;
-          # Add codex package
-          codex = pkgs.codex;
           # Add baidupcs-go package
           baidupcs-go = pkgs.baidupcs-go;
           temporal-cli = pkgs.temporal-cli;
@@ -118,4 +109,4 @@
           flash-attn = pkgs.python313Packages.flash-attn;
         };
       });
-} 
+}
