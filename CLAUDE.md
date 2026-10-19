@@ -6,13 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a custom Nix flake providing packages not available or outdated in nixpkgs, including:
 - Command-line tools and services: `baidupcs-go`, `temporal-cli`, `temporal`, `temporal-ui-server`
-- Python packages: `tushare`, `pyexecjs`, `xtquant`, `regex`, and the HuggingFace family (`transformers`, `sentence-transformers`, `huggingface-hub`, `tokenizers`, `hf-xet`)
+- Python packages: `tushare`, `pyexecjs`, `regex`, and the HuggingFace family (`transformers`, `sentence-transformers`, `huggingface-hub`, `tokenizers`, `hf-xet`)
 
 ## Common Commands
 
 ```bash
 # Build ALL packages at once (always use this instead of building one by one)
-nix build .#tushare .#pyexecjs .#xtquant .#hf-xet .#huggingface-hub .#tokenizers .#transformers .#sentence-transformers .#pydantic .#pydantic-core .#baidupcs-go .#temporal-cli .#temporal .#temporal-ui-server .#temporalio .#flash-attn
+nix build .#tushare .#pyexecjs .#hf-xet .#huggingface-hub .#tokenizers .#transformers .#sentence-transformers .#pydantic .#pydantic-core .#baidupcs-go .#temporal-cli .#temporal .#temporal-ui-server .#temporalio .#flash-attn
 
 # Build a specific package
 nix build .#temporal-cli
@@ -107,7 +107,7 @@ The `pkgs/huggingface-family/default.nix` demonstrates handling packages with in
 Each package change gets its own commit. Commit messages follow these patterns:
 
 - **Version update:** `<package>: <old-version> -> <new-version>` (e.g., `temporal-cli: 1.7.0 -> 1.9.1`)
-- **New package:** `<package>: init at <version>` (e.g., `xtquant: init at 250516.1.1`)
+- **New package:** `<package>: init at <version>` (e.g., `tushare: init at 1.4.29`)
 - **Remove package:** `<package>: remove package`
 - **Flake lock update:** `flake.lock: update nixpkgs <old-date> -> <new-date>`
 

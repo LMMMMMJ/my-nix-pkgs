@@ -11,7 +11,6 @@
 
 - `tushare` - 中国股票市场数据接口
 - `pyexecjs` - 在 Python 中运行 JavaScript 代码
-- `xtquant` - 迅投量化交易接口；行情和交易功能依赖 Windows 原生扩展
 - `baidupcs-go` - 百度网盘命令行工具
 
 ### Temporal 家族包

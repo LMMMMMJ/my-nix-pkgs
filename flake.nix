@@ -16,7 +16,6 @@
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
-              xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
               flash-attn = python-final.callPackage ./pkgs/flash-attention {
                 upstream = python-prev.flash-attn;
@@ -109,7 +108,6 @@
           temporal = pkgs.temporal;
           temporal-ui-server = pkgs.temporal-ui-server;
           temporalio = pkgs.python3Packages.temporalio;
-          xtquant = pkgs.python3Packages.xtquant;
           flash-attn = pkgs.python3Packages.flash-attn;
         };
       });
