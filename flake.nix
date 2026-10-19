@@ -32,6 +32,24 @@
                   changelog = "https://github.com/pallets/click/blob/${version}/CHANGES.rst";
                 };
               });
+              # Typer 0.25.1 仍使用 Click 8.5 弃用的接口；新版使用自带实现。
+              typer = python-prev.typer.overridePythonAttrs (old: rec {
+                version = "0.27.3";
+                src = final.fetchFromGitHub {
+                  owner = "fastapi";
+                  repo = "typer";
+                  tag = version;
+                  hash = "sha256-Rg5vFInHqLDObGTFQ8k86Yw45+lXGdLIcgVFV6Z/gB0=";
+                };
+                dependencies = builtins.filter (dep: (dep.pname or "") != "click") old.dependencies;
+                # 子进程直接运行测试文件时，也需要找到仓库根目录的 tests 模块。
+                preCheck = (old.preCheck or "") + ''
+                  export PYTHONPATH="$PWD''${PYTHONPATH:+:$PYTHONPATH}"
+                '';
+                meta = old.meta // {
+                  changelog = "https://github.com/fastapi/typer/releases/tag/${version}";
+                };
+              });
               # httpx2 的下载测试仍调用 Click 8.5 弃用的辅助函数；保留测试并仅过滤该警告。
               httpx2 = python-prev.httpx2.overridePythonAttrs (old: {
                 pytestFlags = (old.pytestFlags or [ ]) ++ [
