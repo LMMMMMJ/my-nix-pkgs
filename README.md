@@ -28,6 +28,7 @@
 - `tokenizers` - 快速、现代的分词器库
 - `transformers` - 最新的 Transformer 模型库
 - `sentence-transformers` - 句子嵌入和语义搜索库
+- `flash-attn` - FlashAttention 2 CUDA 实现，针对当前 Torch 从源码编译
 
 ## 在其他项目中使用
 

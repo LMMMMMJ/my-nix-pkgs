@@ -18,7 +18,9 @@
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
               xtquant = python-final.callPackage ./pkgs/xtquant { };
               regex = python-final.callPackage ./pkgs/regex { };
-              flash-attn = python-final.callPackage ./pkgs/flash-attention { };
+              flash-attn = python-final.callPackage ./pkgs/flash-attention {
+                upstream = python-prev.flash-attn;
+              };
               # huggingface-hub 1.33 要求 Click >= 8.4.2，锁定的 nixpkgs 提供 8.3.3。
               click = python-prev.click.overridePythonAttrs (old: rec {
                 version = "8.5.0";
@@ -122,9 +124,7 @@
           temporal-ui-server = pkgs.temporal-ui-server;
           temporalio = pkgs.python3Packages.temporalio;
           xtquant = pkgs.python3Packages.xtquant;
-          # The wheel is cp313; python3Packages is 3.14, where the package
-          # marks itself broken.
-          flash-attn = pkgs.python313Packages.flash-attn;
+          flash-attn = pkgs.python3Packages.flash-attn;
         };
       });
 }
