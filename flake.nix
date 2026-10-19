@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay/4cdea398dc491b082dccdce0fad1ed0b75fa3394";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -77,6 +81,11 @@
           # Add non-Python packages here
           baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
           collie = final.callPackage ./pkgs/collie { };
+          herdr = let
+            toolchain = (inputs.rust-overlay.lib.mkRustBin { } final).stable."1.96.1".minimal;
+          in final.callPackage ./pkgs/herdr {
+            rustPlatform = final.makeRustPlatform { cargo = toolchain; rustc = toolchain; };
+          };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
           temporal-ui-server = final.callPackage ./pkgs/temporal-family/temporal-ui-server { };
@@ -106,6 +115,7 @@
           # Add baidupcs-go package
           baidupcs-go = pkgs.baidupcs-go;
           collie = pkgs.collie;
+          herdr = pkgs.herdr;
           temporal-cli = pkgs.temporal-cli;
           temporal = pkgs.temporal;
           temporal-ui-server = pkgs.temporal-ui-server;

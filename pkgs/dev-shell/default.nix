@@ -1,4 +1,4 @@
-{ mkShell, python3, nodejs, baidupcs-go, collie,
+{ mkShell, python3, nodejs, baidupcs-go, collie, herdr,
   temporal-cli, temporal, temporal-ui-server }:
 
 let
@@ -31,6 +31,7 @@ in mkShell rec {
     nodejs
     baidupcs-go
     collie
+    herdr
     temporal-cli temporal temporal-ui-server
   ];
 
