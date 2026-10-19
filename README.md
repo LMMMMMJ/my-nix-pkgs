@@ -4,6 +4,7 @@
 
 部署文档：[通过用户级 Tailscale 用手机访问 Collie](docs/collie-tailscale-setup.md)，
 包含从零安装所需的 NixOS 模块、脚本、登录配对步骤和验收方法。
+打包方式、升级步骤及兼容性检查见 [Collie 相关软件包的维护](docs/collie-packaging.md)。
 
 ## 包含的包
 
@@ -269,6 +270,7 @@ temporal --version
 nix build .#tushare
 nix build .#pyexecjs
 nix build .#temporal-cli
+nix build .#collie .#herdr .#tailscale .#collie-tailscale
 
 # 构建 HuggingFace 包
 nix build .#sentence-transformers

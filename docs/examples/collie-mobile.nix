@@ -7,7 +7,7 @@ let
 
   # 两个命令使用同一段实现，保证 socket 的选择一致。
   tailscaleCommand = ''
-    exec ${pkgs.tailscale}/bin/tailscale \
+    exec ${cfg.tailscalePackage}/bin/tailscale \
       --socket="''${XDG_RUNTIME_DIR:-/run/user/$(${pkgs.coreutils}/bin/id -u)}/collie-tailscale/tailscaled.sock" \
       "$@"
   '';
@@ -73,6 +73,12 @@ in
       type = lib.types.package;
       description = "Herdr package exposing bin/herdr.";
     };
+    tailscalePackage = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.tailscale;
+      defaultText = lib.literalExpression "pkgs.tailscale";
+      description = "Tailscale package shared by the CLI wrappers and user daemon.";
+    };
     users = lib.mkOption {
       default = { };
       description = "Existing Unix users allowed to run their own Collie instance.";
@@ -109,7 +115,7 @@ in
     }) userNames;
 
     # 不把原始 Collie 包或内部 tailscale 包加入全局 PATH，以免命令重名。
-    environment.systemPackages = [ collie collieTailscale cfg.herdrPackage pkgs.tailscale ];
+    environment.systemPackages = [ collie collieTailscale cfg.herdrPackage cfg.tailscalePackage ];
     environment.etc = lib.mapAttrs' (name: user:
       lib.nameValuePair "collie-mobile/${name}.env" {
         text = userEnvironment name user;
@@ -125,7 +131,7 @@ in
       unitConfig.ConditionUser = map (name: "|${name}") userNames;
       serviceConfig = {
         ExecStart = lib.concatStringsSep " " [
-          "${pkgs.tailscale}/bin/tailscaled"
+          "${cfg.tailscalePackage}/bin/tailscaled"
           "--tun=userspace-networking"
           "--socket=%t/collie-tailscale/tailscaled.sock"
           "--statedir=%S/collie-tailscale"
