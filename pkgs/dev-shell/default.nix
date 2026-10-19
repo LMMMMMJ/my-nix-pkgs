@@ -1,4 +1,4 @@
-{ mkShell, python3, nodejs, baidupcs-go,
+{ mkShell, python3, nodejs, baidupcs-go, collie,
   temporal-cli, temporal, temporal-ui-server }:
 
 let
@@ -30,6 +30,7 @@ in mkShell rec {
     # PyExecJS 需要 JavaScript 引擎。
     nodejs
     baidupcs-go
+    collie
     temporal-cli temporal temporal-ui-server
   ];
 

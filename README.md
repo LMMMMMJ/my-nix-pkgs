@@ -12,6 +12,7 @@
 - `tushare` - 中国股票市场数据接口
 - `pyexecjs` - 在 Python 中运行 JavaScript 代码
 - `baidupcs-go` - 百度网盘命令行工具
+- `collie` - 通过 Tailscale 在手机上访问终端 Agent，包含完整网页资源
 
 ### Temporal 家族包
 

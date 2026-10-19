@@ -76,6 +76,7 @@
           ];
           # Add non-Python packages here
           baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
+          collie = final.callPackage ./pkgs/collie { };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
           temporal-ui-server = final.callPackage ./pkgs/temporal-family/temporal-ui-server { };
@@ -104,6 +105,7 @@
           pydantic-core = pkgs.python3Packages.pydantic-core;
           # Add baidupcs-go package
           baidupcs-go = pkgs.baidupcs-go;
+          collie = pkgs.collie;
           temporal-cli = pkgs.temporal-cli;
           temporal = pkgs.temporal;
           temporal-ui-server = pkgs.temporal-ui-server;
