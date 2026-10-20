@@ -1,10 +1,10 @@
 # Collie 相关软件包的维护
 
-本仓库管理以下版本，核查日期为 2026-10-19：
+本仓库管理以下版本，核查日期为 2026-10-20：
 
 | 包 | 版本 | 打包方式 |
 | --- | --- | --- |
-| Collie | 1.22.6 | 官方发布归档，保留完整网页资源 |
+| Collie | 1.23.0 | 官方发布归档，保留完整网页资源 |
 | Herdr | 0.9.5 | 固定源码、Cargo 和 Zig 依赖，从源码构建 |
 | Tailscale | 1.104.1 | 复用 nixpkgs 的打包逻辑，固定版本和哈希 |
 | collie-tailscale | 跟随 Tailscale | 为当前用户选择 daemon socket 的脚本 |
@@ -16,7 +16,7 @@ Linux 用户的完整安装步骤见 [配置指南](collie-tailscale-setup.md)�
 ## Collie
 
 参考官方的
-[packaging/nix/collie.nix](https://github.com/AltanS/collie/blob/9cc40c8a3e75e9547e711d52d49bf5c1dd7d2aba/packaging/nix/collie.nix)。
+[packaging/nix/collie.nix](https://github.com/AltanS/collie/blob/fafa44b6fd9fdfaf6fa969e31d467d18a296b2d6/packaging/nix/collie.nix)。
 本仓库独立维护 `pkgs/collie/default.nix` 和 `sources.json`，不调用官方 flake。
 
 Collie 是 Bun 编译的可执行文件，官方 Nix 包也使用发布归档。必须保留
@@ -29,6 +29,13 @@ strip 会破坏附加在可执行文件中的 Bun 程序。安装检查同时验
 升级时检查官方 release 和 `collie-<version>.manifest.json`，更新版本、归档 URL
 及哈希，再实际运行 `collie version`。不要只看 Git 标签：`v1.22.5` 标签中的旧 Nix
 清单曾安装 1.22.4。当前支持与官方 Nix 包相同的 Linux x64、Linux ARM64、macOS ARM64。
+
+1.23.0 沿用 1.22.6 的 `.env` 加载顺序、systemd unit 和配对接口，可继续使用
+Herdr 0.9.5。新增的 Sent 会记录通过 Collie 发送的 shell 命令，Walky talky 提供
+会话间消息，两者默认启用；可在用户私有 `.env` 中用 `COLLIE_SENT=off` 关闭记录、
+用 `COLLIE_WALKY=off` 拒收消息，然后执行 `collie restart`。Walky talky 的 Agent 指令
+需按需执行 `collie skill install <agent>` 安装；启动 bridge 不会自动写入这些指令。
+详见 [1.23.0 发布说明](https://github.com/AltanS/collie/releases/tag/v1.23.0)。
 
 ## Herdr
 
