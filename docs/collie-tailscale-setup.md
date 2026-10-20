@@ -34,7 +34,7 @@ Tailscale 把设备加入一个私有网络，称为 **tailnet**。这里每个 
 设置 `COLLIE_TRUSTED_USER`，只接受指定 Tailscale 登录身份，并使用设备配对凭据。
 Tailscale 登录身份、Unix 用户名、手机配对名称是三个不同的值。
 
-参考：[Collie 安全说明](https://github.com/AltanS/collie/blob/9cc40c8a3e75e9547e711d52d49bf5c1dd7d2aba/docs/security.md)、
+参考：[Collie 安全说明](https://github.com/AltanS/collie/blob/fafa44b6fd9fdfaf6fa969e31d467d18a296b2d6/docs/security.md)、
 [Tailscale Serve](https://tailscale.com/docs/features/tailscale-serve)。
 
 ## 2. 准备信息及版本
@@ -67,15 +67,15 @@ Nix 需要启用 `nix-command` 和 `flakes`。如果现有系统还未启用，�
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
 
-本仓库维护 Collie `1.22.6`、Herdr `0.9.5` 和 Tailscale `1.104.1`，均为
-2026-10-19 核查时的最新稳定版。后文通过 `my-nix-pkgs.packages` 取得同一套包，
+本仓库维护 Collie `1.23.0`、Herdr `0.9.5` 和 Tailscale `1.104.1`，均为
+2026-10-20 核查时的最新稳定版。后文通过 `my-nix-pkgs.packages` 取得同一套包，
 系统 flake 的锁文件记录具体提交；无需再引入 Collie、Herdr 的官方 flake。
 
 Collie 安装官方发布归档，并核对发布清单中的哈希；Herdr 使用固定源码提交和依赖
 哈希构建；Tailscale 复用 nixpkgs 的打包逻辑，由本仓库固定版本和源码哈希。维护方式
 和兼容性检查见 [Collie 相关软件包的维护](collie-packaging.md)。
 
-版本依据：[Collie 发布说明](https://github.com/AltanS/collie/releases/tag/v1.22.6)、
+版本依据：[Collie 发布说明](https://github.com/AltanS/collie/releases/tag/v1.23.0)、
 [Herdr 发布说明](https://github.com/herdrdev/herdr/releases/tag/v0.9.5)、
 [Tailscale 发布说明](https://github.com/tailscale/tailscale/releases/tag/v1.104.1)。
 
@@ -489,4 +489,4 @@ collie stop
 | 改名或换 tailnet 后，旧主屏幕图标失效 | 用 `collie url` 获取新地址，重新添加主屏幕入口；新浏览器来源可能需要重新配对 |
 
 进一步排查可查看
-[Collie 故障排查文档](https://github.com/AltanS/collie/blob/9cc40c8a3e75e9547e711d52d49bf5c1dd7d2aba/docs/troubleshooting.md)。
+[Collie 故障排查文档](https://github.com/AltanS/collie/blob/fafa44b6fd9fdfaf6fa969e31d467d18a296b2d6/docs/troubleshooting.md)。
