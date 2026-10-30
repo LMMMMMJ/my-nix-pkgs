@@ -317,10 +317,45 @@ python3 -c "import rqdatac; print(rqdatac.__version__)"
 
 安装检查不需要账户或网络，会验证二进制扩展、财务 API 导出和传输编解码。
 实际取数仍需调用 `rqdatac.init()` 并提供有效账户；凭据不写入 Nix 表达式。
-此包对应基础 `rqdatac`，不包含另行发布的 `fund`、`bond`、`news`、`esg` 扩展包。
+此包包含上游 `proxy` extra 所需的 `python-socks`，可通过 `rqdatac.init(proxy_info=...)`
+仅为 RQData 连接指定 SOCKS/HTTP 代理；不会设置系统代理或替换 Python 全局 socket。
+不包含另行发布的 `fund`、`bond`、`news`、`esg` 扩展包。
 
 升级时从 [PyPI 发布元数据](https://pypi.org/pypi/rqdatac/json) 更新版本和各平台 wheel
 校验值，重新构建并在开发环境验证。
+
+## RQData 独立代理所需工具
+
+`x86_64-linux` 新增两个输出，均可通过 overlay 或 `packages` 取得：
+
+| 输出 | 内容 |
+| --- | --- |
+| `ruijie-sslvpn-cli` | 锐捷 SSLVPN 3.5.0（DEB 版本 `3.5.0.1789643503`）命令行客户端 |
+| `rqdata-proxy-tools` | CLI、含代理依赖的 RQData/Python、bubblewrap、slirp4netns、Dante、iproute2、net-tools、socat、jq、OpenSSL |
+
+```bash
+nix build .#ruijie-sslvpn-cli .#rqdatac .#rqdata-proxy-tools
+nix shell .#rqdata-proxy-tools
+ruijie-sslvpn-cli --help
+sockd -v
+python -c 'import rqdatac, python_socks; print(rqdatac.__version__)'
+```
+
+客户端从锐捷官方 `Linux_64` DEB 提取，固定版本、无临时签名的下载地址和 SHA-256。
+仅保留 CLI、语言文件和配置模板，修复 ELF 解释器及动态库路径；不执行 DEB 安装脚本，
+不安装 GUI、pkexec 入口或系统服务。软件为 `unfree`，下游须允许该包。
+
+工具组合只提供命令，不包含 VPN 启动器、账号、证书或代理配置。CLI 的 `conn` 会配置
+TUN、路由和 DNS，应放在独立网络及挂载命名空间中运行，隔离 `/etc`、`/run` 及系统服务套接字。
+其调用的 NetworkManager/systemd 集成不随此包安装；在独立环境中须由启动器配置并检查路由。
+运行时通过 `--config` 传入受限配置文件，不能把密码或 License 写入 Nix store。
+`--autoconnect` 和 `--optimize` 是启用开关，不能通过后接 `false` 关闭；关闭值应写入
+JSON 配置。CLI 在 stdin EOF 后会循环打印提示，监督进程须保持输入通道并用 `disc`、
+`exit` 正常退出，同时设置输出和退出超时限制。
+
+安装测试仅检查 CLI 帮助和资源文件，不建立 VPN。RQData 的离线安装测试还检查 SOCKS
+连接适配，并确认普通 `socket.create_connection` 不被修改。实际部署须另外验证证书、
+权限、目标限制、断线时拒绝代理请求，以及宿主机网络保持不变。
 
 ## 添加新包
 

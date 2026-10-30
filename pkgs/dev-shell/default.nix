@@ -1,4 +1,5 @@
-{ mkShell, python3, nodejs, baidupcs-go, collie, herdr, tailscale, collie-tailscale,
+{ lib, stdenv, mkShell, python3, nodejs, baidupcs-go, collie, herdr, tailscale, collie-tailscale,
+  rqdata-proxy-tools,
   temporal-cli, temporal, temporal-ui-server }:
 
 let
@@ -36,7 +37,7 @@ in mkShell rec {
     tailscale
     collie-tailscale
     temporal-cli temporal temporal-ui-server
-  ];
+  ] ++ lib.optionals (stdenv.hostPlatform.system == "x86_64-linux") [ rqdata-proxy-tools ];
 
   shellHook = ''
     export PS1="$(echo -e '\u${pythonIcon}') {\[$(tput sgr0)\]\[\033[38;5;228m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]} (${name}) \\$ \[$(tput sgr0)\]"

@@ -81,6 +81,8 @@
           ];
           # Add non-Python packages here
           baidupcs-go = final.callPackage ./pkgs/baidupcs-go { };
+          ruijie-sslvpn-cli = final.callPackage ./pkgs/ruijie-sslvpn-cli { };
+          rqdata-proxy-tools = final.callPackage ./pkgs/rqdata-proxy-tools { };
           collie = final.callPackage ./pkgs/collie { };
           herdr = let
             toolchain = (inputs.rust-overlay.lib.mkRustBin { } final).stable."1.96.1".minimal;
@@ -129,6 +131,8 @@
           temporal-ui-server = pkgs.temporal-ui-server;
           temporalio = pkgs.python3Packages.temporalio;
           flash-attn = pkgs.python3Packages.flash-attn;
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          inherit (pkgs) ruijie-sslvpn-cli rqdata-proxy-tools;
         };
       });
 }
