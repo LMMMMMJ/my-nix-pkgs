@@ -6,6 +6,7 @@ let
     with pyPkgs;
     [
       tushare
+      rqdatac
       pyexecjs
       # PyTorch (CUDA-enabled via torch-bin override in flake.nix)
       torch
@@ -40,7 +41,7 @@ in mkShell rec {
   shellHook = ''
     export PS1="$(echo -e '\u${pythonIcon}') {\[$(tput sgr0)\]\[\033[38;5;228m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]} (${name}) \\$ \[$(tput sgr0)\]"
     echo "Welcome to ${name} development environment!"
-    echo "Available packages: tushare, pyexecjs, baidupcs-go"
+    echo "Available packages: tushare, rqdatac, pyexecjs, baidupcs-go"
     echo "Collie tools: collie, herdr, tailscale, collie-tailscale"
     echo "HuggingFace packages: hf-xet, huggingface-hub, tokenizers, transformers, sentence-transformers"
     echo "Temporal packages: temporal-cli (temporal), temporal-server, temporal-ui-server, temporalio (python)"

@@ -11,6 +11,7 @@
 ### 基础包
 
 - `tushare` - 中国股票市场数据接口
+- `rqdatac` - 米筐 RQData Python 客户端，包含行情、PIT 财务、业绩预告及快报接口
 - `pyexecjs` - 在 Python 中运行 JavaScript 代码
 - `baidupcs-go` - 百度网盘命令行工具
 - `collie` - 通过 Tailscale 在手机上访问终端 Agent，包含完整网页资源
@@ -268,6 +269,7 @@ temporal --version
 ```bash
 # 构建特定包
 nix build .#tushare
+nix build .#rqdatac
 nix build .#pyexecjs
 nix build .#temporal-cli
 nix build .#collie .#herdr .#tailscale .#collie-tailscale
@@ -293,6 +295,32 @@ python3 -c "import transformers; print('transformers OK')"
 python3 -c "import huggingface_hub; print('huggingface-hub OK')"
 temporal --version
 ```
+
+## RQData 客户端
+
+`rqdatac` 固定使用 PyPI 官方 wheel，并按 CPython 3.10–3.14 和 Linux/macOS 的
+x86_64、aarch64 平台选择相应文件，SHA-256 记录在 `pkgs/rqdatac/sources.json`。
+当前锁定的 nixpkgs 已停止支持 x86_64-darwin，该平台 wheel 仅供仍支持 Intel macOS 的下游 nixpkgs 使用。
+该 wheel 不支持 PyPy、自由线程 Python 或 musl。上游未声明开源许可证，
+因此包标记为 `unfree`；下游应用 overlay 时须配置 `config.allowUnfree = true`。
+
+```nix
+# 在应用本仓 overlay 的 pkgs 中使用
+python3.withPackages (ps: [ ps.rqdatac ])
+```
+
+本仓 `nix develop` 已包含该客户端，可执行：
+
+```bash
+python3 -c "import rqdatac; print(rqdatac.__version__)"
+```
+
+安装检查不需要账户或网络，会验证二进制扩展、财务 API 导出和传输编解码。
+实际取数仍需调用 `rqdatac.init()` 并提供有效账户；凭据不写入 Nix 表达式。
+此包对应基础 `rqdatac`，不包含另行发布的 `fund`、`bond`、`news`、`esg` 扩展包。
+
+升级时从 [PyPI 发布元数据](https://pypi.org/pypi/rqdatac/json) 更新版本和各平台 wheel
+校验值，重新构建并在开发环境验证。
 
 ## 添加新包
 
