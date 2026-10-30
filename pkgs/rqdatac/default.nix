@@ -12,6 +12,7 @@
   pandas,
   python-dateutil,
   python-rapidjson,
+  python-socks,
   six,
   zstandard,
 }:
@@ -51,6 +52,8 @@ buildPythonPackage {
     pandas
     python-dateutil
     python-rapidjson
+    # 包含上游 proxy extra，供 RQData 自身的连接使用 SOCKS/HTTP 代理。
+    python-socks
     six
     zstandard
   ];
