@@ -1,0 +1,95 @@
+{
+  "version": "3.8.1",
+  "wheels": {
+    "cp310": {
+      "aarch64-darwin": {
+        "hash": "sha256-nBVu0JLK2z+rq/emR5F4SWX1UUqIobzLUwfCngHu6S4=",
+        "url": "https://files.pythonhosted.org/packages/27/01/8bf5ba8c6da829c4ff6d6ab247b7b7bb32ddd618512d0a5e2d0a24875497/rqdatac-3.8.1-cp310-cp310-macosx_11_0_arm64.whl"
+      },
+      "aarch64-linux": {
+        "hash": "sha256-m1Wa8PkBV7vIrL8DSi6ms+owI/bRDNAmBT2/7X2BIZo=",
+        "url": "https://files.pythonhosted.org/packages/9f/bc/602beaf65bdccdb6d0d45e64cf376c993574bbc3213712f0fdc32d52a107/rqdatac-3.8.1-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.whl"
+      },
+      "x86_64-darwin": {
+        "hash": "sha256-s3ELkSIiWv+cEMVPnKqlnk+u68MJJQXnmVDwMdBCYzc=",
+        "url": "https://files.pythonhosted.org/packages/cb/e3/369361520c5eed5338089518b65732f37090d15ed6b51add3f0c8b4ead54/rqdatac-3.8.1-cp310-cp310-macosx_10_9_x86_64.whl"
+      },
+      "x86_64-linux": {
+        "hash": "sha256-T/w043jOK1eVvcqQcyJL/NEaTwOO5dDi3LNIAo07vPo=",
+        "url": "https://files.pythonhosted.org/packages/c8/d6/b2a54e66bcc910173d46ea1d18084e308be0e7c83e41df9e089cb0af06e6/rqdatac-3.8.1-cp310-cp310-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl"
+      }
+    },
+    "cp311": {
+      "aarch64-darwin": {
+        "hash": "sha256-QJlrN3jy5bRUPg1GXJulUwAdwvwaCyE9KuKa8CpIV6M=",
+        "url": "https://files.pythonhosted.org/packages/57/ec/87d1b811c2ddd9e74564b8f5a12609db64a386b91f0722a36b7ad12d0823/rqdatac-3.8.1-cp311-cp311-macosx_11_0_arm64.whl"
+      },
+      "aarch64-linux": {
+        "hash": "sha256-zZYBj+WzG1iZvKglHB1URNFSDsY2N09a9C4n1iV1IpI=",
+        "url": "https://files.pythonhosted.org/packages/09/a4/5fd2bde6305d686014d28fc80abbbd6c1a5ae086434cab9e5534e4bbde2f/rqdatac-3.8.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl"
+      },
+      "x86_64-darwin": {
+        "hash": "sha256-kRRfUbxeCZNRDkk3dl/bmjmRege9qIy09MoI1ql9m2k=",
+        "url": "https://files.pythonhosted.org/packages/58/47/d88b9cdf71f4a9a7fe77e8bdcd4fd93e341ecc7e056dca1900319d96d04d/rqdatac-3.8.1-cp311-cp311-macosx_10_9_x86_64.whl"
+      },
+      "x86_64-linux": {
+        "hash": "sha256-5t7tGxGMrGg8/AikcWnsvx1a9ot1z2Fa5qaAML4ocKs=",
+        "url": "https://files.pythonhosted.org/packages/5f/bd/9e6c03c4c10e282df5fea6dcc79c9c0ddd4fc7c1d46b6e8056fd43fb58dd/rqdatac-3.8.1-cp311-cp311-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl"
+      }
+    },
+    "cp312": {
+      "aarch64-darwin": {
+        "hash": "sha256-kOZohZy+wFNfNsxe+l6Fs7ohBBcTY3ceG6fXHuNqybQ=",
+        "url": "https://files.pythonhosted.org/packages/1f/81/6300fcd68b06dfba810fcbb832fa08df850d946c5c517283d665d21a5ca6/rqdatac-3.8.1-cp312-cp312-macosx_11_0_arm64.whl"
+      },
+      "aarch64-linux": {
+        "hash": "sha256-tRiIo+hANRPiyUlmG6Ur8se/88AjWsJ5RiH3WCcDyAs=",
+        "url": "https://files.pythonhosted.org/packages/cb/dd/a123682b117e8dd5bd152733f1fdb0f066f332babf95202039f02e56d05e/rqdatac-3.8.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl"
+      },
+      "x86_64-darwin": {
+        "hash": "sha256-XUxAT8aElouaOXJgAo6KzGrj1rTc6KoviD75nIQEf/c=",
+        "url": "https://files.pythonhosted.org/packages/83/d6/87218bc740973a787d705ead011b7f3db0369fd563da38bc328b4bc7e9af/rqdatac-3.8.1-cp312-cp312-macosx_10_9_x86_64.whl"
+      },
+      "x86_64-linux": {
+        "hash": "sha256-0Eq7D3eEV51Uxf6aIqe27g3snNBqQ3yEED2fNQpwFts=",
+        "url": "https://files.pythonhosted.org/packages/79/55/aa31e989fc5bc5d1e19611c1f7cb82ca7927bfedbb86cc82ba20c2d71c52/rqdatac-3.8.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl"
+      }
+    },
+    "cp313": {
+      "aarch64-darwin": {
+        "hash": "sha256-GgIklM2LNSMCOWhKhenwpeJrXl4Q1C+6VDgIi9YHYH0=",
+        "url": "https://files.pythonhosted.org/packages/95/ca/7ea07e85a2fbcdfffa3336846c12fc1de684d309ec65c14ddcda53198e52/rqdatac-3.8.1-cp313-cp313-macosx_12_0_arm64.whl"
+      },
+      "aarch64-linux": {
+        "hash": "sha256-TSCkoAIiyJxnnPDf5NJFfn5tJXwWY3b3IBItoIHx0Tg=",
+        "url": "https://files.pythonhosted.org/packages/92/b2/5921efff63cc24cb8b3004dba3c9ced9e9186e26065b4d0fc5da503a72ca/rqdatac-3.8.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl"
+      },
+      "x86_64-darwin": {
+        "hash": "sha256-FeY51kGHinEC02azcRbBwENmAk9cZFXRe802Q0vktco=",
+        "url": "https://files.pythonhosted.org/packages/d3/a1/8fab669ef2ebe216b4b1a25ed6755f4a40281e62ddba7a3fecef64c52a23/rqdatac-3.8.1-cp313-cp313-macosx_10_13_x86_64.whl"
+      },
+      "x86_64-linux": {
+        "hash": "sha256-ekrvFBWZXv6K++r6NGUQetn+Tzbyi5BRKJkIvud4Vx0=",
+        "url": "https://files.pythonhosted.org/packages/63/bf/709dcb5c5f6185a5dec82e3a928554e958f1336766a4c4b1b5f83596d2d7/rqdatac-3.8.1-cp313-cp313-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl"
+      }
+    },
+    "cp314": {
+      "aarch64-darwin": {
+        "hash": "sha256-tyXw9ynP6FEYq2kth8EzSZySNWBQ2O2gK6Xb85ihpfI=",
+        "url": "https://files.pythonhosted.org/packages/c4/1a/0fa0db1d58569cc38dd510d4e5c8bb16b281c7f1b2ad260b17ce1b5652bc/rqdatac-3.8.1-cp314-cp314-macosx_12_0_arm64.whl"
+      },
+      "aarch64-linux": {
+        "hash": "sha256-6s0vXhKVgxJ2XivOiw13VWnMXDZkoUlwdAGzppnJsR0=",
+        "url": "https://files.pythonhosted.org/packages/37/c4/7067de712d162b8b2c66752fd1b022635309f5db76fd65af7072b50b6a1f/rqdatac-3.8.1-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.whl"
+      },
+      "x86_64-darwin": {
+        "hash": "sha256-7yWRutXsL3hF0grHAs8MPNAoUqIm815nJcxsU8yt0Rc=",
+        "url": "https://files.pythonhosted.org/packages/65/b5/af0c54ce5bfdaca761d6841142f32039279b0b85e0fc5ee960d894daffd7/rqdatac-3.8.1-cp314-cp314-macosx_10_13_x86_64.whl"
+      },
+      "x86_64-linux": {
+        "hash": "sha256-PJBrt0yEVfSQVVKg/nXcdziqw5jRjMMqO2JLbDHWCc8=",
+        "url": "https://files.pythonhosted.org/packages/ed/31/4c4aa3f9a4197ede7da884fb3a87c0c5cfe6360b3625d6ada8b281c91ad4/rqdatac-3.8.1-cp314-cp314-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl"
+      }
+    }
+  }
+}

@@ -19,6 +19,7 @@
             (python-final: python-prev: rec {
               # Add your custom Python packages here
               tushare = python-final.callPackage ./pkgs/tushare { };
+              rqdatac = python-final.callPackage ./pkgs/rqdatac { };
               pyexecjs = python-final.callPackage ./pkgs/pyexecjs { };
               regex = python-final.callPackage ./pkgs/regex { };
               flash-attn = python-final.callPackage ./pkgs/flash-attention {
@@ -108,6 +109,7 @@
         packages = {
           # Expose packages for direct building
           tushare = pkgs.python3Packages.tushare;
+          rqdatac = pkgs.python3Packages.rqdatac;
           pyexecjs = pkgs.python3Packages.pyexecjs;
           hf-xet = pkgs.python3Packages.hf-xet;
           huggingface-hub = pkgs.python3Packages.huggingface-hub;
