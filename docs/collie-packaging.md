@@ -1,10 +1,10 @@
 # Collie 相关软件包的维护
 
-本仓库管理以下版本，核查日期为 2026-10-20：
+本仓库管理以下版本，核查日期为 2026-10-31：
 
 | 包 | 版本 | 打包方式 |
 | --- | --- | --- |
-| Collie | 1.23.0 | 官方发布归档，保留完整网页资源 |
+| Collie | 1.25.2 | 官方发布归档，保留完整网页资源 |
 | Herdr | 0.9.5 | 固定源码、Cargo 和 Zig 依赖，从源码构建 |
 | Tailscale | 1.104.1 | 复用 nixpkgs 的打包逻辑，固定版本和哈希 |
 | collie-tailscale | 跟随 Tailscale | 为当前用户选择 daemon socket 的脚本 |
@@ -16,7 +16,7 @@ Linux 用户的完整安装步骤见 [配置指南](collie-tailscale-setup.md)�
 ## Collie
 
 参考官方的
-[packaging/nix/collie.nix](https://github.com/AltanS/collie/blob/fafa44b6fd9fdfaf6fa969e31d467d18a296b2d6/packaging/nix/collie.nix)。
+[packaging/nix/collie.nix](https://github.com/AltanS/collie/blob/v1.25.2/packaging/nix/collie.nix)。
 本仓库独立维护 `pkgs/collie/default.nix` 和 `sources.json`，不调用官方 flake。
 
 Collie 是 Bun 编译的可执行文件，官方 Nix 包也使用发布归档。必须保留
@@ -36,6 +36,15 @@ Herdr 0.9.5。新增的 Sent 会记录通过 Collie 发送的 shell 命令，Wal
 用 `COLLIE_WALKY=off` 拒收消息，然后执行 `collie restart`。Walky talky 的 Agent 指令
 需按需执行 `collie skill install <agent>` 安装；启动 bridge 不会自动写入这些指令。
 详见 [1.23.0 发布说明](https://github.com/AltanS/collie/releases/tag/v1.23.0)。
+
+1.25.2 继续支持 Herdr TUI 0.9.5；该版本仍是 Herdr TUI 的最新稳定版。
+上游新增的 herdr-core 适配属于另一套运行时，现有配置保持 `COLLIE_MUX=herdr`，
+升级不会迁移到 herdr-core。`.env` 仍覆盖命令行进程环境，主 unit 仍使用
+`_exec-bridge`；原来的用户目录、Tailscale socket 和设备配对记录继续使用。
+1.24/1.25 增加发送确认、发送诊断和新 Agent 适配，1.25.2 修复多项 herdr-core
+输入问题及 Claude 自定义配置目录下的 hooks 安装路径。详见
+[1.25.2 发布说明](https://github.com/AltanS/collie/releases/tag/v1.25.2)。
+Nix 安装通过更新本仓库的版本固定并重建升级，不使用 `collie update` 改写包。
 
 ## Herdr
 
