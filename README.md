@@ -5,6 +5,7 @@
 部署文档：[通过用户级 Tailscale 用手机访问 Collie](docs/collie-tailscale-setup.md)，
 包含从零安装所需的 NixOS 模块、脚本、登录配对步骤和验收方法。
 打包方式、升级步骤及兼容性检查见 [Collie 相关软件包的维护](docs/collie-packaging.md)。
+Heeler 的安装、首次连接、后续新增设备和单独撤销见 [Heeler 指南](docs/heeler-setup.md)。
 
 ## 包含的包
 
@@ -18,6 +19,7 @@
 - `herdr` - 管理终端工作区和 Agent 会话，使用 Rust 和 Zig 从源码构建
 - `tailscale` - 私有网络客户端和 daemon，复用 nixpkgs 打包逻辑并固定发布版本
 - `collie-tailscale` - 连接当前用户的 Collie Tailscale socket，不操作系统级 daemon
+- `heeler` - 固定源码与 Node 依赖的 Heeler 插件，提供配对、检查和多设备 SSH 授权管理
 
 ### Temporal 家族包
 
