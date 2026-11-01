@@ -1,4 +1,4 @@
-{ lib, stdenv, mkShell, python3, nodejs, baidupcs-go, collie, herdr, tailscale, collie-tailscale, heeler,
+{ lib, stdenv, mkShell, python3, nodejs, baidupcs-go, collie, herdr, tailscale, collie-tailscale,
   rqdata-proxy-tools,
   temporal-cli, temporal, temporal-ui-server }:
 
@@ -9,12 +9,8 @@ let
       tushare
       rqdatac
       pyexecjs
-      regex
-      pydantic
-      pydantic-core
       # PyTorch (CUDA-enabled via torch-bin override in flake.nix)
       torch
-      flash-attn
       # HuggingFace family packages
       hf-xet
       huggingface-hub
@@ -40,7 +36,6 @@ in mkShell rec {
     herdr
     tailscale
     collie-tailscale
-    heeler
     temporal-cli temporal temporal-ui-server
   ] ++ lib.optionals (stdenv.hostPlatform.system == "x86_64-linux") [ rqdata-proxy-tools ];
 
