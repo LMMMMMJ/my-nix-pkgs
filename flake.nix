@@ -93,6 +93,7 @@
             upstream = prev.tailscale;
           };
           collie-tailscale = final.callPackage ./pkgs/collie-tailscale { };
+          herdr-ssh-shell = final.callPackage ./pkgs/herdr-ssh-shell { };
           temporal-cli = final.callPackage ./pkgs/temporal-family/temporal-cli { };
           temporal = final.callPackage ./pkgs/temporal-family/temporal { };
           temporal-ui-server = final.callPackage ./pkgs/temporal-family/temporal-ui-server { };
@@ -107,6 +108,13 @@
         };
       in {
         devShells.default = pkgs.callPackage ./pkgs/dev-shell { };
+
+        checks = pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          herdr-ssh-shell = import ./pkgs/herdr-ssh-shell/tests {
+            inherit pkgs;
+            shellPackage = pkgs.herdr-ssh-shell;
+          };
+        };
 
         packages = {
           # Expose packages for direct building
@@ -131,6 +139,8 @@
           temporal-ui-server = pkgs.temporal-ui-server;
           temporalio = pkgs.python3Packages.temporalio;
           flash-attn = pkgs.python3Packages.flash-attn;
+        } // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          inherit (pkgs) herdr-ssh-shell;
         } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs) ruijie-sslvpn-cli rqdata-proxy-tools;
         };
