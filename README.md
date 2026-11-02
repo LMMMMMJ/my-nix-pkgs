@@ -16,6 +16,7 @@
 - `baidupcs-go` - 百度网盘命令行工具
 - `collie` - 通过 Tailscale 在手机上访问终端 Agent，包含完整网页资源
 - `herdr` - 管理终端工作区和 Agent 会话，使用 Rust 和 Zig 从源码构建
+- `herdr-ssh-shell` - SSH 远程命令使用 Bash，交互登录继续使用 fish；修复 HerdrChat 的 Codex launcher 安装，见[说明](docs/herdrchat-ssh.md)
 - `tailscale` - 私有网络客户端和 daemon，复用 nixpkgs 打包逻辑并固定发布版本
 - `collie-tailscale` - 连接当前用户的 Collie Tailscale socket，不操作系统级 daemon
 
