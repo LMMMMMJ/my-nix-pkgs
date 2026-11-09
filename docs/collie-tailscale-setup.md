@@ -67,15 +67,15 @@ Nix 需要启用 `nix-command` 和 `flakes`。如果现有系统还未启用，�
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
 
-本仓库维护 Collie `1.25.3`、Herdr `0.9.5` 和 Tailscale `1.104.1`，均为
-2026-10-20 核查时的最新稳定版。后文通过 `my-nix-pkgs.packages` 取得同一套包，
+本仓库维护 Collie `1.27.4`、Herdr `0.9.5` 和 Tailscale `1.104.1`；2026-11-09
+核查了 Collie 和 Herdr 的最新稳定版。后文通过 `my-nix-pkgs.packages` 取得同一套包，
 系统 flake 的锁文件记录具体提交；无需再引入 Collie、Herdr 的官方 flake。
 
 Collie 安装官方发布归档，并核对发布清单中的哈希；Herdr 使用固定源码提交和依赖
 哈希构建；Tailscale 复用 nixpkgs 的打包逻辑，由本仓库固定版本和源码哈希。维护方式
 和兼容性检查见 [Collie 相关软件包的维护](collie-packaging.md)。
 
-版本依据：[Collie 发布说明](https://github.com/AltanS/collie/releases/tag/v1.25.3)、
+版本依据：[Collie 发布说明](https://github.com/AltanS/collie/releases/tag/v1.27.4)、
 [Herdr 发布说明](https://github.com/herdrdev/herdr/releases/tag/v0.9.5)、
 [Tailscale 发布说明](https://github.com/tailscale/tailscale/releases/tag/v1.104.1)。
 
@@ -84,6 +84,9 @@ Collie 安装官方发布归档，并核对发布清单中的哈希；Herdr 使�
 本目录提供可以直接复制的完整模块：
 [examples/collie-mobile.nix](examples/collie-mobile.nix)。它包含所有包装脚本和服务定义，
 不引用本仓库的 overlay，也不依赖 `my-nix-modules`。
+
+Collie 1.27 起默认开启匿名安装统计；示例模块显式设置 `COLLIE_TELEMETRY=0`，
+让 CLI 和后台服务都保持关闭。部署后可用 `collie doctor` 的 `telemetry` 行确认。
 
 ### 3.1 复制模块
 

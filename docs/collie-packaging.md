@@ -1,10 +1,10 @@
 # Collie 相关软件包的维护
 
-本仓库管理以下版本，Collie 核查日期为 2026-11-01：
+本仓库管理以下版本，Collie 和 Herdr 核查日期为 2026-11-09：
 
 | 包 | 版本 | 打包方式 |
 | --- | --- | --- |
-| Collie | 1.25.3 | 官方发布归档，保留完整网页资源 |
+| Collie | 1.27.4 | 官方发布归档，保留完整网页资源 |
 | Herdr | 0.9.5 | 固定源码、Cargo 和 Zig 依赖，从源码构建 |
 | Tailscale | 1.104.1 | 复用 nixpkgs 的打包逻辑，固定版本和哈希 |
 | collie-tailscale | 跟随 Tailscale | 为当前用户选择 daemon socket 的脚本 |
@@ -16,7 +16,7 @@ Linux 用户的完整安装步骤见 [配置指南](collie-tailscale-setup.md)�
 ## Collie
 
 参考官方的
-[packaging/nix/collie.nix](https://github.com/AltanS/collie/blob/v1.25.3/packaging/nix/collie.nix)。
+[packaging/nix/collie.nix](https://github.com/AltanS/collie/blob/v1.27.4/packaging/nix/collie.nix)。
 本仓库独立维护 `pkgs/collie/default.nix` 和 `sources.json`，不调用官方 flake。
 
 Collie 是 Bun 编译的可执行文件，官方 Nix 包也使用发布归档。必须保留
@@ -49,7 +49,25 @@ pi/omp pane 误读旧会话等问题；仍使用现有 Herdr TUI、systemd 和�
 详见 [1.25.3 发布说明](https://github.com/AltanS/collie/releases/tag/v1.25.3)。
 Nix 安装通过更新本仓库的版本固定并重建升级，不使用 `collie update` 改写包。
 
+1.27.4 继续使用 Herdr TUI 0.9.5、`COLLIE_MUX=herdr`、用户级 Tailscale socket、
+`_exec-bridge` 和原配对记录。1.26 收紧来自其他 loopback 端口的跨源请求，尾网 HTTPS
+和原有配对访问方式继续有效。1.27 改进大屏/折叠屏布局、主题、消息输入和通知；
+1.27.1 修复 Chrome 后台更新通知和侧栏滚动，并增加 `/slot/<n>` 页面入口。
+1.27.4 修复 Codex 目录信任、hook 信任弹窗和 omp 计划审阅在手机上缺少操作按钮，
+并完善故障诊断。详见[1.27.4 及此前版本的变更记录](https://github.com/AltanS/collie/blob/v1.27.4/CHANGELOG.md)。
+
+**1.27 起匿名遥测默认开启**，这是相较 1.26 及更早版本的行为变化。包保留官方行为；
+本仓库的 NixOS 示例和 HomeServer 配置显式设置 `COLLIE_TELEMETRY=0`，保持升级前
+不发送安装统计的行为。普通安装可在实例的 `.env` 设置该项并执行 `collie restart`；
+只在交互 shell 设置变量不会更新已有后台服务。检查 `collie doctor` 的 `telemetry`
+行可确认实际状态，详见[官方配置说明](https://github.com/AltanS/collie/blob/v1.27.4/docs/configure.md)。
+
 ## Herdr
+
+2026-11-09 核对官方 releases：Herdr TUI 的最新稳定版仍为
+[0.9.5](https://github.com/herdrdev/herdr/releases/tag/v0.9.5)，标签指向本仓库已经固定的
+`2ecf19a92fc3a7fff75b6ce3655ef04f4625ec01`，因此本次不改版本或构建输入。
+`herdr-core`、`herdr-app` 是另一套运行时，本次更新继续使用现有 TUI。
 
 参考官方的
 [nix/package.nix](https://github.com/herdrdev/herdr/blob/2ecf19a92fc3a7fff75b6ce3655ef04f4625ec01/nix/package.nix)。

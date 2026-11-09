@@ -52,6 +52,7 @@ let
         COLLIE_SERVE_MODE = "https";
         COLLIE_SERVE_PORT = "443";
         COLLIE_ALLOW_ANY_HOST = "0";
+        COLLIE_TELEMETRY = "0";
         COLLIE_STATE_DIR = "${home}/.local/state/collie";
         HERDR_PLUGIN_CONFIG_DIR = "${home}/.config/herdr/plugins/config/herdr.collie";
         HERDR_SOCKET_PATH = "${home}/.config/herdr/herdr.sock";
